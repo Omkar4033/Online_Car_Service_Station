@@ -1,31 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
-import { loginUser } from "../redux/actions/userActions"; // Action to handle login
+import { loginUser } from "../redux/actions/userActions";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const darkMode = useSelector((state) => state.darkMode.isDarkMode); // Get dark mode state
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("userData");
-    if (storedUser) {
-      console.log("User data from localStorage:", JSON.parse(storedUser));
-    } else {
-      console.log("No user data found in localStorage.");
-    }
-  }, []);
+  const darkMode = useSelector((state) => state.darkMode.isDarkMode);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,32 +19,19 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     dispatch(loginUser(formData))
       .then(() => {
-        const storedUser = localStorage.getItem("userData");
-        if (storedUser) {
-          console.log("User data from localStorage:", JSON.parse(storedUser));
-        } else {
-          console.log("No user data found in localStorage.");
-        }
-
         setLoading(false);
-        navigate("/"); // Redirect to the homepage or other page
+        navigate("/"); 
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false);
-        setError("Login failed. Please try again.");
-        console.error(err);
       });
   };
 
-  if (loading) {
-    return <Loader />;
-  }
-
+ 
   return (
     <div
       className={`min-h-screen flex flex-col items-center justify-center p-6 ${
@@ -72,15 +44,7 @@ const LoginPage = () => {
         }`}
       >
         <h2 className="text-2xl font-bold mb-4">Login</h2>
-        {error && (
-          <div
-            className={`${
-              darkMode ? "bg-red-800 text-red-100" : "bg-red-100 text-red-700"
-            } px-4 py-2 rounded mb-4`}
-          >
-            {error}
-          </div>
-        )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Email</label>

@@ -8,16 +8,12 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate data fetch
-    setTimeout(() => setLoading(false), 1000);
+    // Simulate a loading delay
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <Loader />;
-  }
-
  
-
   const bookingStatus = [
     { title: "Total Bookings", value: 120 },
     { title: "Pending Bookings", value: 30 },
@@ -98,7 +94,7 @@ const AdminDashboard = () => {
                 >
                   {booking.map((data, idx) => (
                     <td key={idx} className="p-3">
-                      {data}
+                      {typeof data === "object" ? JSON.stringify(data) : data}
                     </td>
                   ))}
                 </tr>

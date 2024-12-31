@@ -48,7 +48,7 @@ const Profile = ({ isLoggedIn, darkMode, handleLogout }) => {
 
       {/* Dropdown menu */}
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-50">
           <ul className="text-gray-800 dark:text-gray-100">
             {isLoggedIn ? (
               <>

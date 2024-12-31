@@ -103,6 +103,7 @@ const RegistrationPage = () => {
             >
               <option value="Customer">Customer</option>
               <option value="Admin">Admin</option>
+              <option value="Mechanic">Mechanic</option>
             </select>
           </div>
           <button

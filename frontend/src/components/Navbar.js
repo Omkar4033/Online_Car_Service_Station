@@ -6,10 +6,13 @@ import { MdLightMode, MdDarkMode } from "react-icons/md";
 import Profile from "./Profile"; // Import Profile component
 import { userLogout } from "../redux/actions/userActions"; // Import the user logout action
 
-const Navbar = ({ userRole, isLoggedIn }) => {
+const Navbar = ({ isLoggedIn }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
+
+  // Retrieve the userRole from Redux state
+  const userRole = useSelector((state) => state.auth?.user?.user?.role); 
 
   // Effect to read from localStorage and update the Redux state
   useEffect(() => {
@@ -19,20 +22,9 @@ const Navbar = ({ userRole, isLoggedIn }) => {
     }
   }, [dispatch]);
 
-  // Effect to apply the dark mode class to the document and store in localStorage
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("darkMode", "true");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("darkMode", "false");
-    }
-  }, [darkMode]);
-
   // Logout function
   const handleLogout = () => {
-    dispatch(userLogout()); // Dispatch logout action
+    dispatch(userLogout()); 
   };
 
   return (
@@ -40,7 +32,6 @@ const Navbar = ({ userRole, isLoggedIn }) => {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo Section */}
         <Link to="/" className="flex items-center space-x-2 text-xl font-bold hover:text-gray-200">
-          {/* SVG Logo */}
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="text-3xl">
             <circle cx="50" cy="50" r="40" stroke="currentColor" fill="none" />
             <circle cx="50" cy="50" r="15" stroke="currentColor" fill="none" />
@@ -82,19 +73,16 @@ const Navbar = ({ userRole, isLoggedIn }) => {
             </li>
           )}
           {userRole === "Admin" && (
-            <>
-              <li>
-                <Link
-                  to="/admin/dashboard"
-                  className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/admin/dashboard" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
-                >
-                  Admin Dashboard
-                </Link>
-              </li>
-             
-            </>
+            <li>
+              <Link
+                to="/admin/dashboard"
+                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/admin/dashboard" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+              >
+                Admin Dashboard
+              </Link>
+            </li>
           )}
-          {userRole === "mechanic" && (
+          {userRole === "Mechanic" && (
             <li>
               <Link
                 to="/mechanic/dashboard"
@@ -110,6 +98,14 @@ const Navbar = ({ userRole, isLoggedIn }) => {
               className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/about" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
             >
               About Us
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/contact"
+              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/contact" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+            >
+              Contact Us
             </Link>
           </li>
         </ul>
