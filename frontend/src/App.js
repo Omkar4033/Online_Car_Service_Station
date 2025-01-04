@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
 import Footer from "./components/Footer";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const App = () => {
   // Access user data from Redux state
@@ -11,6 +12,8 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState("customer");
 
+
+  const navigate=useNavigate();
   useEffect(() => {
     if (user) {
       setUserRole(user.user.userRole);
@@ -19,6 +22,7 @@ const App = () => {
     } else {
       setUserRole("customer");
       setIsLoggedIn(false);
+      navigate("/login");
     }
   }, [user]);
 

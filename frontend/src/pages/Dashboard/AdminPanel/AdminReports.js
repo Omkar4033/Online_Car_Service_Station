@@ -13,9 +13,7 @@ const AdminReports = () => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  if (loading) {
-    return <Loader />;
-  }
+ 
 
   const bookingsData = {
     monthly: [12, 15, 20, 18, 24, 30, 28, 25, 22, 19, 16, 14],

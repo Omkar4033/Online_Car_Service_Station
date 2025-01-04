@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const ProfileSettings = () => {
+const Settings = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode); // Assuming Redux state for dark mode
 
   const [userData, setUserData] = useState({
@@ -173,4 +173,4 @@ const ProfileSettings = () => {
   );
 };
 
-export default ProfileSettings;
+export default Settings;

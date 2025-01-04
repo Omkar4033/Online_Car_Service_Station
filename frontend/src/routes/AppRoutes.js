@@ -22,7 +22,7 @@ import AdminAllUsers from "../pages/Dashboard/AdminPanel/AdminAllUsers";
 import CartPage from "../pages/Dashboard/CustomerPanel/CartPage";
 import PaymentPage from "../pages/Dashboard/CustomerPanel/PaymentPage";
 import MyCars from "../pages/Dashboard/CustomerPanel/MyCars";
-import UserSettings from "../pages/Dashboard/CustomerPanel/UserSettings"; // Settings page for customer
+import UserSettings from "../pages/Dashboard/CustomerPanel/Settings"; // Settings page for customer
 import CustomerBookings from "../pages/Dashboard/CustomerPanel/CustomerBookings"; // Bookings page for customer
 
 const AppRoutes = () => (
