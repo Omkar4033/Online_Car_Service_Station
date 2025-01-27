@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import AddCarDetails from "../pages/Dashboard/CustomerPanel/AddCarDetails";
+import AddCarDetails from "../Dashboard/CustomerPanel/AddCarDetails";
 import ServiceSideBar from "./serviceSideBar";
 import ServiceContent from "./ServiceContent";
 

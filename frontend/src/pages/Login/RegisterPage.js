@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../redux/actions/userActions";
-import Loader from "../components/Loader";
+import { registerUser } from "../../redux/actions/userActions";
+import Loader from "../../components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 
 const RegistrationPage = () => {
