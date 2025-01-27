@@ -1,77 +1,74 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/actions/cartActions";
+import {
+  fetchCategories,
+  fetchServicesByCategory,
+} from "../../services API/serviceAPI";
 import Loader from "../../components/Loader";
+import { ToastContainer, toast, Zoom } from "react-toastify";
 
 const ServiceContent = ({ darkMode }) => {
   const [categories, setCategories] = useState([]);
   const [servicesByCategory, setServicesByCategory] = useState(new Map());
   const [selectedCategory, setSelectedCategory] = useState(1);
-  const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const notify = () =>
+    toast.success(" Added to Cart!", {
+      position: "bottom-right",
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: darkMode ? "dark" : "light",
+      transition: Zoom,
+    });
 
-  // Fetch services by category and store them in a map
-  const fetchServicesByCategory = async (categoryId) => {
-    if (servicesByCategory.has(categoryId)) {
-      // Use cached services if they exist
-      return;
-    }
-
-    setIsLoading(true); // Show loader while fetching
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/services?categoryId=${categoryId}`
-      );
-      if (response.status === 200) {
-        const fetchedServices = response.data.map((item) => ({
-          id: item.id,
-          name: item.Name,
-          description: item.Description,
-          price: parseFloat(item.Price),
-          category_ids: item.category_ids,
-          category_names: item.category_names,
-        }));
-
-        setServicesByCategory((prevMap) => new Map(prevMap.set(categoryId, fetchedServices)));
-      }
-    } catch (error) {
-      console.error("Error fetching services:", error);
-    } finally {
-      setIsLoading(false); // Hide loader after fetching
-    }
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch categories on mount
-    const fetchCategories = async () => {
-      setIsLoading(true); // Show loader during initial fetch
+    const fetchData = async () => {
+      setIsLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/services/categories");
-        if (response.status === 200) {
-          setCategories(response.data);
-        }
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories);
+
+        const fetchedServices = await fetchServicesByCategory(1); // Initial category fetch
+        setServicesByCategory((prev) => new Map(prev.set(1, fetchedServices)));
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching data:", error);
       } finally {
-        setIsLoading(false); // Hide loader after fetching
+        setIsLoading(false);
       }
     };
 
-    fetchCategories();
-    fetchServicesByCategory(1); // Default fetch for the initial category
+    fetchData();
   }, []);
 
-  const handleCategoryClick = (categoryId) => {
+  const handleCategoryClick = async (categoryId) => {
     setSelectedCategory(categoryId);
-    fetchServicesByCategory(categoryId); // Fetch services for the selected category
+    if (!servicesByCategory.has(categoryId)) {
+      setIsLoading(true);
+      try {
+        const fetchedServices = await fetchServicesByCategory(categoryId);
+        console.log(fetchedServices);
+        setServicesByCategory(
+          (prev) => new Map(prev.set(categoryId, fetchedServices))
+        );
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
-  const getCategoryName = (categoryId) => {
-    const category = categories.find((cat) => cat.id === categoryId);
-    return category ? category.Name : "No category";
-  };
-
-  const addToCart = (service) => {
-    setCart((prevCart) => [...prevCart, service]);
+  const addToCartHandler = (service) => {
+    console.log(service);
+    dispatch(addToCart(service));
+    notify(`${service.name} added to cart!`);
   };
 
   return (
@@ -109,28 +106,26 @@ const ServiceContent = ({ darkMode }) => {
               >
                 <h2 className="text-lg font-semibold">{service.name}</h2>
                 <p className="text-sm">{service.description}</p>
-                {/* Display categories */}
-                <p className="text-sm text-gray-500">
-                  Categories: {getCategoryName(selectedCategory)}
+                <p className="text-lg font-bold mt-2">
+                  ₹{service.price.toFixed(2)}
                 </p>
-                <p className="text-lg font-bold mt-2">₹{service.price.toFixed(2)}</p>
                 <button
-                  id={service.id}
                   className={`mt-4 py-2 px-4 rounded shadow ${
                     darkMode
                       ? "bg-yellow-300 text-black hover:bg-yellow-400"
                       : "bg-yellow-300 text-white hover:bg-yellow-400"
                   }`}
-                  onClick={() => addToCart(service)}
+                  onClick={() => addToCartHandler(service)}
                 >
                   Add to Cart
                 </button>
+                <ToastContainer />
               </div>
             ))
           : null}
       </div>
 
-      {isLoading && <Loader />} {/* Add loader component */}
+      {isLoading && <Loader />}
     </>
   );
 };
