@@ -1,10 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar"; // Import the progress bar component
 
 const PaymentPage = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
+  const cart = useSelector((state) => state.cart.items); // Access the cart from Redux state
+  const dispatch = useDispatch();
+
+  // Calculate the total price
+  const totalPrice = cart.reduce((total, service) => total + service.price, 0);
+
   const [paymentDetails, setPaymentDetails] = React.useState({
     cardNumber: "",
     expiryDate: "",
@@ -24,8 +30,43 @@ const PaymentPage = () => {
   const handlePayment = () => {
     console.log("Contact details: ", contactDetails);
     console.log("Processing payment with details: ", paymentDetails);
-    // Add payment logic here
-    navigate("/user/order-confirmation"); // Redirect to order confirmation page
+
+    // First, create an order on your backend to get the order_id
+    fetch("http://localhost:8080/razorpay/order", {
+      method: "POST",
+      body: JSON.stringify({ amount: totalPrice }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((orderData) => {
+        const { id, currency } = orderData;
+
+        const options = {
+          key: "your_razorpay_key_id", // Replace with your Razorpay Key ID
+          amount: totalPrice * 100, // Amount in paise
+          currency: currency,
+          order_id: id,
+          name: "wheely",
+          description: "Payment for your order",
+          handler: function (response) {
+            console.log("Payment successful:", response);
+            // Optionally, confirm the payment with Razorpay API on the server-side
+            navigate("/user/order-confirmation"); // Redirect to order confirmation page
+          },
+          prefill: {
+            name: contactDetails.name,
+            email: contactDetails.email,
+            contact: contactDetails.phone,
+          },
+          theme: {
+            color: "#F37254",
+          },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open(); // Open Razorpay Payment Modal
+      })
+      .catch((error) => console.error("Error creating order:", error));
   };
 
   const handleBack = () => {
@@ -38,7 +79,6 @@ const PaymentPage = () => {
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
       }`}
     >
-
       <div className="w-full max-w-4xl space-y-6">
         {/* Progress Bar */}
         <ProgressBar currentStep="payment" darkMode={darkMode} />
@@ -112,7 +152,7 @@ const PaymentPage = () => {
             </div>
           </div>
 
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between items-center mt-6 space-x-4">
             {/* Back Button */}
             <button
               onClick={handleBack}
@@ -123,6 +163,17 @@ const PaymentPage = () => {
               }`}
             >
               Back to Contact
+            </button>
+
+            {/* Total Price Button */}
+            <button
+              className={`px-6 py-3 rounded-md font-semibold ${
+                darkMode
+                  ? "bg-green-600 text-gray-100 hover:bg-blue-500"
+                  : "bg-green-500 text-white"
+              } hover:opacity-90`}
+            >
+              Total: ₹{totalPrice}
             </button>
 
             {/* Pay Button */}

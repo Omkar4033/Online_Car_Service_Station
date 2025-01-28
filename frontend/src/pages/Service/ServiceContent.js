@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; // Use useSelector to access the Redux state
 import { addToCart } from "../../redux/actions/cartActions";
-import {
-  fetchCategories,
-  fetchServicesByCategory,
+import {fetchCategories,fetchServicesByCategory,
 } from "../../services API/serviceAPI";
 import Loader from "../../components/Loader";
 import { ToastContainer, toast, Zoom } from "react-toastify";
+
 
 const ServiceContent = ({ darkMode }) => {
   const [categories, setCategories] = useState([]);
   const [servicesByCategory, setServicesByCategory] = useState(new Map());
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
   const notify = () =>
-    toast.success(" Added to Cart!", {
+    toast.success("Added to Cart!", {
       position: "bottom-right",
       autoClose: 1000,
       hideProgressBar: true,
@@ -27,6 +27,8 @@ const ServiceContent = ({ darkMode }) => {
     });
 
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth?.user); // Access the user data from Redux state
+ 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,7 +55,6 @@ const ServiceContent = ({ darkMode }) => {
       setIsLoading(true);
       try {
         const fetchedServices = await fetchServicesByCategory(categoryId);
-        console.log(fetchedServices);
         setServicesByCategory(
           (prev) => new Map(prev.set(categoryId, fetchedServices))
         );
@@ -66,9 +67,22 @@ const ServiceContent = ({ darkMode }) => {
   };
 
   const addToCartHandler = (service) => {
-    console.log(service);
-    dispatch(addToCart(service));
-    notify(`${service.name} added to cart!`);
+   
+    if (user?.user !== undefined) { // Check if the user is logged in
+      dispatch(addToCart(service));
+      notify(`${service.name} added to cart!`);
+    } else {
+      toast.warn("Login Required !", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        theme: darkMode ? "dark" : "light",
+        transition: Zoom,
+      });
+    }
   };
 
   return (
