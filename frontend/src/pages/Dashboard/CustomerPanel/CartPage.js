@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFromCart } from "../../../redux/actions/cartActions"; // Import the remove action
+import ProgressBar from "./ProgressBar"; // Import the timeline component
 
 const CartPage = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
@@ -18,24 +19,13 @@ const CartPage = () => {
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
       }`}
     >
-      {/* Header */}
-      <header className="p-4 shadow-md flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Shopping Cart</h1>
-        <Link to="/services">
-          <button
-            className={`px-4 py-2 rounded-md ${
-              darkMode
-                ? "bg-yellow-500 text-gray-900 hover:bg-yellow-400"
-                : "bg-yellow-400 text-gray-800 hover:bg-yellow-500"
-            }`}
-          >
-            Back to Services
-          </button>
-        </Link>
-      </header>
+      
+
+      {/* Progress Bar */}
 
       {/* Main Content */}
       <main className="flex-grow w-full max-w-4xl mx-auto p-6">
+      <ProgressBar currentStep="cart" darkMode={darkMode} />
         <h2 className="text-2xl font-semibold mb-6">Your Cart</h2>
 
         {/* Cart Items */}
@@ -43,7 +33,7 @@ const CartPage = () => {
           {cart.length === 0 ? (
             <p className="text-center text-lg">Your cart is empty. Start adding some services!</p>
           ) : (
-            cart.map((service,id) => (
+            cart.map((service, id) => (
               <div
                 key={id}
                 className={`p-4 rounded-lg shadow-md flex justify-between items-center ${
@@ -79,7 +69,7 @@ const CartPage = () => {
             <p className="text-xl font-bold">Total: ₹{totalPrice.toFixed(2)}</p>
 
             {/* Checkout Button */}
-            <Link to="/user/payment">
+            <Link to="/user/contact-info">
               <button
                 className={`px-6 py-3 rounded-md font-semibold ${
                   darkMode

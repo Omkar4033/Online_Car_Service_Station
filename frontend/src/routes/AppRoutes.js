@@ -14,10 +14,12 @@ import PageNotFound from "../pages/PageNotFound";
 // Customer Panel
 import CustomerDashboard from "../pages/Dashboard/CustomerPanel/CustomerDashboard";
 import CartPage from "../pages/Dashboard/CustomerPanel/CartPage";
+import ContactInfo from "../pages/Dashboard/CustomerPanel/ContactInfo";
 import PaymentPage from "../pages/Dashboard/CustomerPanel/PaymentPage";
 import MyCars from "../pages/Dashboard/CustomerPanel/MyCars";
 import UserSettings from "../pages/Dashboard/CustomerPanel/Settings";
 import CustomerBookings from "../pages/Dashboard/CustomerPanel/CustomerBookings";
+import OrderConfirmationPage from "../pages/Dashboard/CustomerPanel/OrderConfirmation";
 
 // Admin Panel
 import AdminDashboard from "../pages/Dashboard/AdminPanel/AdminDashboard";
@@ -49,6 +51,9 @@ const AppRoutes = () => (
     <Route path="/user/my-cars" element={<MyCars />} />
     <Route path="/user/settings" element={<UserSettings />} />
     <Route path="/user/bookings" element={<CustomerBookings />} />
+    <Route path="/user/contact-info" element={<ContactInfo />} />
+    <Route path="/user/order-confirmation" element={<OrderConfirmationPage/>}/>
+    
 
     {/* Admin Routes */}
     <Route path="/admin/dashboard" element={<AdminDashboard />} />

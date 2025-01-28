@@ -23,6 +23,8 @@ const Settings = () => {
     registration: "",
   });
 
+  const [formError, setFormError] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
@@ -33,18 +35,15 @@ const Settings = () => {
     setNewVehicle({ ...newVehicle, [name]: value });
   };
 
-  
   const handleAddVehicle = () => {
-    if (newVehicle.make && newVehicle.model && newVehicle.year && newVehicle.registration) {
-      setVehicles([...vehicles, { ...newVehicle, id: vehicles.length + 1 }]);
-      setNewVehicle({ make: "", model: "", year: "", registration: "" });
-    } else {
-      alert("Please fill in all vehicle details.");
+    if (!newVehicle.make || !newVehicle.model || !newVehicle.year || !newVehicle.registration) {
+      setFormError("Please fill in all fields to add a vehicle.");
+      return;
     }
+    setFormError("");
+    setVehicles([...vehicles, { ...newVehicle, id: vehicles.length + 1 }]);
+    setNewVehicle({ make: "", model: "", year: "", registration: "" });
   };
-  
-  console.log(handleVehicleInputChange());
-  console.log(handleAddVehicle());
 
   const handleSaveChanges = () => {
     alert("Profile updated successfully!");
@@ -61,112 +60,88 @@ const Settings = () => {
           darkMode ? "bg-gray-800" : "bg-white"
         }`}
       >
-        {/* Header */}
         <header className="text-center mb-8">
           <h1 className="text-3xl font-semibold">Profile Settings</h1>
           <p className="text-gray-500">Edit your personal details and manage vehicles</p>
         </header>
 
-        {/* Profile Information Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-6">Profile Information</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Full Name */}
-            <div>
-              <label className="block text-sm font-medium">Full Name</label>
-              <input
-                type="text"
-                name="fullName"
-                value={userData.fullName}
-                onChange={handleInputChange}
-                className={`w-full p-3 rounded-lg border ${
-                  darkMode
-                    ? "border-gray-700 bg-gray-700 text-white"
-                    : "border-gray-300 bg-white text-gray-800"
-                } shadow-sm focus:ring-2 focus:ring-blue-500`}
-              />
-            </div>
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={userData.email}
-                onChange={handleInputChange}
-                className={`w-full p-3 rounded-lg border ${
-                  darkMode
-                    ? "border-gray-700 bg-gray-700 text-white"
-                    : "border-gray-300 bg-white text-gray-800"
-                } shadow-sm focus:ring-2 focus:ring-blue-500`}
-              />
-            </div>
-            {/* Phone */}
-            <div>
-              <label className="block text-sm font-medium">Phone</label>
-              <input
-                type="tel"
-                name="phone"
-                value={userData.phone}
-                onChange={handleInputChange}
-                className={`w-full p-3 rounded-lg border ${
-                  darkMode
-                    ? "border-gray-700 bg-gray-700 text-white"
-                    : "border-gray-300 bg-white text-gray-800"
-                } shadow-sm focus:ring-2 focus:ring-blue-500`}
-              />
-            </div>
-            {/* Address */}
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium">Address</label>
-              <textarea
-                name="address"
-                value={userData.address}
-                onChange={handleInputChange}
-                className={`w-full p-3 rounded-lg border ${
-                  darkMode
-                    ? "border-gray-700 bg-gray-700 text-white"
-                    : "border-gray-300 bg-white text-gray-800"
-                } shadow-sm focus:ring-2 focus:ring-blue-500`}
-              />
-            </div>
+            {["fullName", "email", "phone", "address"].map((field) => (
+              <div key={field}>
+                <label className="block text-sm font-medium capitalize">{field}</label>
+                <input
+                  type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                  name={field}
+                  value={userData[field]}
+                  onChange={handleInputChange}
+                  className={`w-full p-3 rounded-lg border ${
+                    darkMode
+                      ? "border-gray-700 bg-gray-700 text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } shadow-sm focus:ring-2 focus:ring-blue-500`}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Vehicle Management Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-6">My Vehicles</h2>
-
-          {/* Vehicle List */}
           <div className="mb-6 space-y-4">
             {vehicles.map((vehicle) => (
               <div
                 key={vehicle.id}
                 className={`${
                   darkMode ? "bg-gray-800 text-white" : "bg-gray-50 text-gray-800"
-                } p-4 rounded-lg shadow-sm border flex justify-between items-center`}
+                } p-4 rounded-lg shadow-sm border`}
               >
-                <div>
-                  <p className="text-lg font-semibold">{vehicle.make} {vehicle.model} ({vehicle.year})</p>
-                  <p className="text-sm">Reg. Number: {vehicle.registration}</p>
-                </div>
+                <p className="text-lg font-semibold">
+                  {vehicle.make} {vehicle.model} ({vehicle.year})
+                </p>
+                <p className="text-sm">Reg. Number: {vehicle.registration}</p>
               </div>
             ))}
           </div>
 
-         
+          <h3 className="text-xl font-semibold mb-4">Add New Vehicle</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {["make", "model", "year", "registration"].map((field) => (
+              <div key={field}>
+                <label className="block text-sm font-medium capitalize">{field}</label>
+                <input
+                  type="text"
+                  name={field}
+                  value={newVehicle[field]}
+                  onChange={handleVehicleInputChange}
+                  className={`w-full p-3 rounded-lg border ${
+                    darkMode
+                      ? "border-gray-700 bg-gray-700 text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } shadow-sm focus:ring-2 focus:ring-blue-500`}
+                />
+              </div>
+            ))}
+          </div>
+          {formError && <p className="text-red-500 mt-2">{formError}</p>}
+          <button
+            onClick={handleAddVehicle}
+            className="w-full mt-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Add Vehicle
+          </button>
         </div>
 
-        {/* Save Changes Button */}
         <div className="text-center">
-          <div
+          <button
             onClick={handleSaveChanges}
             className={`w-full py-3 rounded-lg ${
-              darkMode ? "bg-yellow-600 text-white" : "bg-yellow-600 text-white"
-            } text-center cursor-pointer hover:bg-yellow-700 transition duration-200`}
+              darkMode ? "bg-yellow-600" : "bg-blue-600"
+            } text-white hover:bg-yellow-700`}
           >
             Save Changes
-          </div>
+          </button>
         </div>
       </div>
     </div>
