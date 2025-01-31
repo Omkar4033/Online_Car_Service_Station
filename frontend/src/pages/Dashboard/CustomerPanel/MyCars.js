@@ -1,25 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';  // Importing delete icon from react-icons
 import { useSelector } from 'react-redux';  // Importing useSelector to access the darkMode state
 import AddCarDetails from './AddCarDetails'; // Import the AddCarDetails component
+import axios from 'axios';
 
 const MyCars = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
-
-  // State to manage the list of cars
-  const [cars, setCars] = useState([
-    { id: 1, make: 'Toyota', model: 'Corolla', year: 2020 },
-    { id: 2, make: 'Honda', model: 'Civic', year: 2022 },
-    { id: 3, make: 'Ford', model: 'Mustang', year: 2021 },
-  ]);
-
-  // State to manage whether we are adding a car
+  const user = useSelector((state) => state.userData?.user);
   const [isAddingCar, setIsAddingCar] = useState(false);
+  const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  
+  
+  function getCarDetails(user){
+    if (user?.userId) {
+      axios
+        .get(`http://localhost:8080/api/cars/user/${user.userId}`)
+        .then((response) => {
+          setCars(response.data);  // Set the cars state with the response data
+          setLoading(false);  // Stop loading after data is fetched
+          console.log(response.data);  // Log the response for debugging
+        })
+        .catch((error) => {
+          console.error('Error fetching cars:', error);
+          setError('Failed to load cars. Please try again later.');
+          setLoading(false);  // Stop loading in case of error
+        });
+    } else {
+      setError('User not found or not logged in.');
+      setLoading(false);
+    }
+  }
+ 
+  useEffect(() => {
+  
+    getCarDetails(user);
+    
+  }, [user]);
 
-  // Function to handle deleting a car
-  const handleDelete = (id) => {
-    setCars(cars.filter(car => car.id !== id));  // Remove car with the given id
-  };
+ 
+
+ // Function to handle deleting a car
+const handleDelete = (carId) => {
+  // Make a request to delete the car from the backend (if applicable)
+  axios.delete(`http://localhost:8080/api/cars/delete/${carId}`)
+    .then((response) => {
+      setCars(cars.filter(car => car.carId !== carId));
+      console.log(`Car with id ${carId} deleted successfully.`);
+    })
+    .catch((error) => {
+      console.error(`Error deleting car with id ${carId}:`, error);
+    });
+};
+
 
   return (
     <div className={`my-cars-container p-6 min-h-screen ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-800'}`}>
@@ -41,20 +75,32 @@ const MyCars = () => {
       ) : (
         // Displaying the list of cars
         <ul className="space-y-4">
-          {cars.length === 0 ? (
+          {loading ? (
+            <p>Loading cars...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : cars.length === 0 ? (
             <p>No cars available.</p>
           ) : (
             cars.map((car) => (
-              <li key={car.id} className={`flex justify-between items-center p-4 rounded-lg shadow-md ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
-                <div>
-                  <h3 className="font-semibold">{`${car.year} ${car.make} ${car.model}`}</h3>
+              <li
+                key={car.carId}
+                className={`flex justify-between items-center p-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'}`}
+              >
+                <div className="flex flex-col space-y-1">
+                  <h3 className="font-semibold text-lg">
+                    {` ${car.carId}. ${car.company} ${car.model}`}
+                  </h3>
+                  <span className="text-sm text-gray-500">{`${car.fuelType}, ${car.registration}`}</span>
                 </div>
+            
                 {/* Delete Button */}
                 <button
-                  onClick={() => handleDelete(car.id)}  // Calling the delete function on click
-                  className={`text-red-500 hover:text-red-700 ${darkMode ? 'hover:text-red-400' : ''}`}
+                  onClick={() => handleDelete(car.carId)}  // Using car.carId instead of car.id
+                  className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 hover:bg-red-600' : 'bg-gray-200 hover:bg-red-300'} transition-all duration-200`}
+                  title="Delete car"
                 >
-                  <FaTrashAlt size={20} />  {/* Delete icon */}
+                  <FaTrashAlt size={18} className="text-red-500" />
                 </button>
               </li>
             ))

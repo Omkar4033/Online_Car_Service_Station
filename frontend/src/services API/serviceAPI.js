@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const fetchCategories = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/api/services/categories");
+    const response = await axios.get("http://localhost:8080/api/categories");
     return response.data;
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -12,14 +12,15 @@ export const fetchCategories = async () => {
 
 export const fetchServicesByCategory = async (categoryId) => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/services?categoryId=${categoryId}`);
+    
+    const response = await axios.get(`http://localhost:8080/api/services/category/${categoryId}`);
     
     return response.data.map((item) => ({
-      id: item.Service_ID ,
-      name: item.Name,
-      description: item.Description,
-      price: parseFloat(item.Price),
-      categoryId: item.Category_ID,
+      id: item.id ,
+      name: item.name,
+      description: item.description,
+      price: parseFloat(item.price),
+      categoryId: item.category.categoryId,
     }));
   } catch (error) {
     console.error("Error fetching services:", error);

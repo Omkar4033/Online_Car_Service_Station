@@ -7,7 +7,7 @@ import cartReducer from "./CartReducer";
 
 const rootReducer = combineReducers({
   darkMode: darkModeReducer, // Add all reducers here
-  auth:userReducer,
+  userData:userReducer,
   services:serviceReducer,
   cart:cartReducer
 });

@@ -8,7 +8,7 @@ const RegistrationPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    phoneNo: "",
     address: "",
     password: "",
     role: "Customer",
@@ -34,8 +34,7 @@ const RegistrationPage = () => {
     dispatch(registerUser(formData))
       .then(() => {
         setLoading(false);
-        alert("Registration Successful!");
-      //  navigate("/login");
+        navigate("/");
       })
       .catch((err) => {
         setLoading(false);
@@ -70,25 +69,82 @@ const RegistrationPage = () => {
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {["name", "email", "phone", "address", "password"].map((field) => (
-            <div key={field}>
-              <label className="block text-sm font-medium">
-                {field.charAt(0).toUpperCase() + field.slice(1)}
-              </label>
-              <input
-                type={field === "password" ? "password" : "text"}
-                name={field}
-                value={formData[field]}
-                onChange={handleChange}
-                required
-                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring ${
-                  darkMode
-                    ? "bg-gray-700 text-gray-200"
-                    : "bg-white text-gray-800"
-                }`}
-              />
-            </div>
-          ))}
+          {/* Name Field */}
+          <div>
+            <label className="block text-sm font-medium">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring ${
+                darkMode ? "bg-gray-700 text-gray-200" : "bg-white text-gray-800"
+              }`}
+            />
+          </div>
+
+          {/* Email Field */}
+          <div>
+            <label className="block text-sm font-medium">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring ${
+                darkMode ? "bg-gray-700 text-gray-200" : "bg-white text-gray-800"
+              }`}
+            />
+          </div>
+
+          {/* Phone Number Field */}
+          <div>
+            <label className="block text-sm font-medium">Phone Number</label>
+            <input
+              type="text"
+              name="phoneNo"
+              value={formData.phoneNo}
+              onChange={handleChange}
+              required
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring ${
+                darkMode ? "bg-gray-700 text-gray-200" : "bg-white text-gray-800"
+              }`}
+            />
+          </div>
+
+          {/* Address Field */}
+          <div>
+            <label className="block text-sm font-medium">Address</label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring ${
+                darkMode ? "bg-gray-700 text-gray-200" : "bg-white text-gray-800"
+              }`}
+            />
+          </div>
+
+          {/* Password Field */}
+          <div>
+            <label className="block text-sm font-medium">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring ${
+                darkMode ? "bg-gray-700 text-gray-200" : "bg-white text-gray-800"
+              }`}
+            />
+          </div>
+
+          {/* Role Selection */}
           <div>
             <label className="block text-sm font-medium">Role</label>
             <select
@@ -96,9 +152,7 @@ const RegistrationPage = () => {
               value={formData.role}
               onChange={handleChange}
               className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring ${
-                darkMode
-                  ? "bg-gray-700 text-gray-200"
-                  : "bg-white text-gray-800"
+                darkMode ? "bg-gray-700 text-gray-200" : "bg-white text-gray-800"
               }`}
             >
               <option value="Customer">Customer</option>
@@ -106,12 +160,11 @@ const RegistrationPage = () => {
               <option value="Mechanic">Mechanic</option>
             </select>
           </div>
+
           <button
             type="submit"
             className={`w-full py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring ${
-              darkMode
-                ? "bg-indigo-600 text-gray-100"
-                : "bg-indigo-600 text-white"
+              darkMode ? "bg-indigo-600 text-gray-100" : "bg-indigo-600 text-white"
             }`}
           >
             Register

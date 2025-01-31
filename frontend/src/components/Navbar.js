@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleDarkMode } from "../redux/reducers/darkModeReducer"; // Redux action
@@ -6,21 +6,16 @@ import { MdLightMode, MdDarkMode } from "react-icons/md";
 import Profile from "./Profile"; // Import Profile component
 import { userLogout } from "../redux/actions/userActions"; // Import the user logout action
 
-const Navbar = ({ isLoggedIn }) => {
+const Navbar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
 
-  // Retrieve the userRole from Redux state
-  const userRole = useSelector((state) => state.auth?.user?.user?.role); 
+  // Get the user data from Redux state to check if the user is logged in
+  const user = useSelector((state) => state.userData.user);
 
-  // Effect to read from localStorage and update the Redux state
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode");
-    if (savedDarkMode) {
-      dispatch(toggleDarkMode(savedDarkMode === "true"));
-    }
-  }, [dispatch]);
+  // Retrieve the userRole from Redux state
+  const userRole = user?.role;
 
   // Logout function
   const handleLogout = () => {
@@ -62,7 +57,7 @@ const Navbar = ({ isLoggedIn }) => {
               Services
             </Link>
           </li>
-          {userRole === "customer" && (
+          {userRole === "CUSTOMER" && (
             <li>
               <Link
                 to="/dashboard/customer"
@@ -72,7 +67,7 @@ const Navbar = ({ isLoggedIn }) => {
               </Link>
             </li>
           )}
-          {userRole === "Admin" && (
+          {userRole === "ADMIN" && (
             <li>
               <Link
                 to="/admin/dashboard"
@@ -82,7 +77,7 @@ const Navbar = ({ isLoggedIn }) => {
               </Link>
             </li>
           )}
-          {userRole === "Mechanic" && (
+          {userRole === "MECHANIC" && (
             <li>
               <Link
                 to="/mechanic/dashboard"
@@ -125,7 +120,7 @@ const Navbar = ({ isLoggedIn }) => {
           </button>
 
           {/* Profile / Login */}
-          <Profile isLoggedIn={isLoggedIn} darkMode={darkMode} handleLogout={handleLogout} />
+          <Profile isLoggedIn={!!user} darkMode={darkMode} handleLogout={handleLogout} />
         </div>
       </div>
     </nav>

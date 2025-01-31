@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"; // Use useSelector to access the Redux state
 import { addToCart } from "../../redux/actions/cartActions";
-import {fetchCategories,fetchServicesByCategory,
-} from "../../services API/serviceAPI";
+import { fetchCategories, fetchServicesByCategory } from "../../services API/serviceAPI";
 import Loader from "../../components/Loader";
 import { ToastContainer, toast, Zoom } from "react-toastify";
 
-
 const ServiceContent = ({ darkMode }) => {
   const [categories, setCategories] = useState([]);
-  const [servicesByCategory, setServicesByCategory] = useState(new Map());
+  const [services, setServices] = useState([]); // Changed from Map to simple array
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,8 +25,7 @@ const ServiceContent = ({ darkMode }) => {
     });
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth?.user); // Access the user data from Redux state
- 
+  const user = useSelector((state) => state.userData?.user); // Access the user data from Redux state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,9 +33,12 @@ const ServiceContent = ({ darkMode }) => {
       try {
         const fetchedCategories = await fetchCategories();
         setCategories(fetchedCategories);
+        console.log("Fetched categories:", fetchedCategories);
 
-        const fetchedServices = await fetchServicesByCategory(1); // Initial category fetch
-        setServicesByCategory((prev) => new Map(prev.set(1, fetchedServices)));
+        // Fetch initial services for the first category
+        const fetchedServices = await fetchServicesByCategory(1);
+        setServices(fetchedServices);
+        console.log(services);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -51,28 +51,24 @@ const ServiceContent = ({ darkMode }) => {
 
   const handleCategoryClick = async (categoryId) => {
     setSelectedCategory(categoryId);
-    if (!servicesByCategory.has(categoryId)) {
-      setIsLoading(true);
-      try {
-        const fetchedServices = await fetchServicesByCategory(categoryId);
-        setServicesByCategory(
-          (prev) => new Map(prev.set(categoryId, fetchedServices))
-        );
-      } catch (error) {
-        console.error("Error fetching services:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    console.log(selectedCategory);
+    setIsLoading(true);
+    try {
+      const fetchedServices = await fetchServicesByCategory(categoryId);
+      setServices(fetchedServices); // Directly setting the fetched services array
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const addToCartHandler = (service) => {
-   
-    if (user?.user !== undefined) { // Check if the user is logged in
+    if (user !== undefined) {
       dispatch(addToCart(service));
       notify(`${service.name} added to cart!`);
     } else {
-      toast.warn("Login Required !", {
+      toast.warn("Login Required!", {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: true,
@@ -91,9 +87,9 @@ const ServiceContent = ({ darkMode }) => {
       <div className="flex space-x-4 mb-8">
         {categories.map((category) => (
           <button
-            key={category.id}
+            key={category.categoryId}
             className={`py-2 px-4 rounded-md font-semibold ${
-              selectedCategory === category.id
+              selectedCategory === category.categoryId
                 ? darkMode
                   ? "bg-yellow-300 text-gray-900"
                   : "bg-yellow-300 text-gray-900"
@@ -101,28 +97,24 @@ const ServiceContent = ({ darkMode }) => {
                 ? "bg-gray-800 text-gray-100 hover:bg-gray-700"
                 : "bg-gray-200 text-gray-800 hover:bg-gray-300"
             }`}
-            onClick={() => handleCategoryClick(category.id)}
+            onClick={() => handleCategoryClick(category.categoryId)}
           >
-            {category.Name}
+            {category.name}
           </button>
         ))}
       </div>
 
       {/* Services for Selected Category */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {servicesByCategory.has(selectedCategory)
-          ? servicesByCategory.get(selectedCategory).map((service, id) => (
+        {services.length > 0
+          ? services.map((service, index) => (
               <div
-                key={id}
-                className={`p-4 rounded-lg shadow-md flex flex-col justify-between ${
-                  darkMode ? "bg-gray-800" : "bg-white"
-                }`}
+                key={index}
+                className={`p-4 rounded-lg shadow-md flex flex-col justify-between ${darkMode ? "bg-gray-800" : "bg-white"} transition-all duration-300 transform hover:scale-105`}
               >
                 <h2 className="text-lg font-semibold">{service.name}</h2>
                 <p className="text-sm">{service.description}</p>
-                <p className="text-lg font-bold mt-2">
-                  ₹{service.price.toFixed(2)}
-                </p>
+                <p className="text-lg font-bold mt-2">₹{service.price.toFixed(2)}</p>
                 <button
                   className={`mt-4 py-2 px-4 rounded shadow ${
                     darkMode
@@ -136,7 +128,7 @@ const ServiceContent = ({ darkMode }) => {
                 <ToastContainer />
               </div>
             ))
-          : null}
+          : <p>No services available for this category.</p>}
       </div>
 
       {isLoading && <Loader />}

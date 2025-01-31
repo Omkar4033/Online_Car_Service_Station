@@ -7,27 +7,28 @@ import Pagination from "../../../components/Pagination"; // Import the Paginatio
 const AdminAllUsers = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
 
-  const initialUsers = [
-    { id: 1, name: "John Doe", email: "john@example.com", phone: "1234567890", address: "123 Main St", status: "Active" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "9876543210", address: "456 Elm St", status: "Inactive" },
-    { id: 3, name: "Mike Johnson", email: "mike@example.com", phone: "2345678901", address: "789 Oak St", status: "Active" },
-    { id: 4, name: "Sarah Williams", email: "sarah@example.com", phone: "3456789012", address: "101 Pine St", status: "Active" },
-    { id: 5, name: "David Brown", email: "david@example.com", phone: "4567890123", address: "202 Maple St", status: "Inactive" },
-    { id: 6, name: "Laura Green", email: "laura@example.com", phone: "5678901234", address: "303 Birch St", status: "Active" },
-    { id: 7, name: "James King", email: "james@example.com", phone: "6789012345", address: "404 Oak St", status: "Active" },
-    { id: 8, name: "Emily Clark", email: "emily@example.com", phone: "7890123456", address: "505 Cedar St", status: "Inactive" },
-    // Add more sample users for pagination testing
-  ];
-
   const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(5); // Number of users per page
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false); // Simulating async data fetching
-    }, 1000); // Mimicking loading time
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/admin/users");
+        if (!response.ok) {
+          throw new Error("Failed to fetch users");
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   const handleEditUser = (id) => {
@@ -70,6 +71,7 @@ const AdminAllUsers = () => {
                   darkMode ? "bg-gray-700" : "bg-gray-200"
                 } text-sm font-semibold`}
               >
+                <th className="p-3">Id</th>
                 <th className="p-3">Name</th>
                 <th className="p-3">Email</th>
                 <th className="p-3">Phone</th>
@@ -95,9 +97,11 @@ const AdminAllUsers = () => {
                         : "bg-gray-100"
                     }`}
                   >
+                   
+                    <td className="p-3">{user.userId}</td>
                     <td className="p-3">{user.name}</td>
                     <td className="p-3">{user.email}</td>
-                    <td className="p-3">{user.phone}</td>
+                    <td className="p-3">{user.phoneNo}</td>
                     <td className="p-3">{user.address}</td>
                     <td className="p-3">{user.status}</td>
                     <td className="p-3 space-x-2">
