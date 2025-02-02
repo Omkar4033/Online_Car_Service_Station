@@ -82,7 +82,7 @@ const AdminAllService = () => {
             ) : (
               <tbody>
                 {currentServices.map((service, index) => (
-                  <tr key={service.id} className={`${darkMode ? (index % 2 === 0 ? "bg-gray-800" : "bg-gray-700") : (index % 2 === 0 ? "bg-white" : "bg-gray-100")}`}>
+                  <tr key={index} className={`${darkMode ? (index % 2 === 0 ? "bg-gray-800" : "bg-gray-700") : (index % 2 === 0 ? "bg-white" : "bg-gray-100")}`}>
                     <td className="p-3 flex items-center">
                       <i className={`fas fa-cog mr-2`}></i>
                       {service.name}

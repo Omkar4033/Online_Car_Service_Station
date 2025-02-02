@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar"; // Import the progress bar component
+import { Link } from "react-router-dom";
 
 const ContactInfo = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
@@ -74,32 +75,34 @@ const ContactInfo = () => {
               </div>
             ))}
           </div>
-          <div className="flex justify-between mt-6">
-            {/* Back Button */}
-            <button
-              onClick={handleBack}
-              className={`px-6 py-3 rounded-md font-semibold ${
-                darkMode
-                  ? "bg-gray-700 text-gray-100 hover:bg-gray-600"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-              }`}
-            >
-              Back to Cart
-            </button>
-            
-            {/* Next Button */}
-            <button
-              onClick={handleNext}
-              className={`px-6 py-3 rounded-md font-semibold ${
-                darkMode
-                  ? "bg-yellow-500 text-gray-100"
-                  : "bg-yellow-400 text-white"
-              } hover:opacity-90`}
-            >
-              Next to Payment
-            </button>
-          </div>
+
+          
         </div>
+           <div className="flex justify-between mt-8">
+                    <Link to="/user/select-car">
+                      <button
+                        className={`px-6 py-3 rounded-md font-semibold ${
+                          darkMode
+                            ? "bg-gray-500 text-gray-900 hover:bg-gray-400"
+                            : "bg-gray-300 text-white hover:bg-gray-400"
+                        }`}
+                      >
+                        Back
+                      </button>
+                    </Link>
+          
+                    <Link to="/user/payment">
+                      <button
+                        className={`px-6 py-3 rounded-md font-semibold ${
+                          darkMode
+                            ? "bg-yellow-500 text-gray-900 hover:bg-yellow-400"
+                            : "bg-yellow-400 text-white hover:bg-yellow-500"
+                        }`}
+                      >
+                        Next
+                      </button>
+                    </Link>
+                  </div>
       </div>
     </div>
   );

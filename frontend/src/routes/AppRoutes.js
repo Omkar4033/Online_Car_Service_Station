@@ -20,6 +20,7 @@ import MyCars from "../pages/Dashboard/CustomerPanel/MyCars";
 import UserSettings from "../pages/Dashboard/CustomerPanel/Settings";
 import CustomerBookings from "../pages/Dashboard/CustomerPanel/CustomerBookings";
 import OrderConfirmationPage from "../pages/Dashboard/CustomerPanel/OrderConfirmation";
+import SelectCar from "../pages/Dashboard/CustomerPanel/SelectCar";
 
 // Admin Panel
 import AdminDashboard from "../pages/Dashboard/AdminPanel/AdminDashboard";
@@ -29,9 +30,15 @@ import AddService from "../pages/Dashboard/AdminPanel/AdminAddService";
 import ViewReport from "../pages/Dashboard/AdminPanel/AdminReports";
 import FeedbackResponse from "../pages/Dashboard/AdminPanel/AdminFeedback";
 import AdminAllUsers from "../pages/Dashboard/AdminPanel/AdminAllUsers";
+import AdminAllMechanics from "../pages/Dashboard/AdminPanel/AdminAllMechanics";
+import AdminAllCars from "../pages/Dashboard/AdminPanel/AdminAllCars";
 
 // Mechanic Panel
 import MechanicDashboard from "../pages/Dashboard/MechanicPanel/MechanicDashboard";
+import MechanicAssignedJobs from "../pages/Dashboard/MechanicPanel/MechanicAssignedJobs";
+import MechanicFeedback from "../pages/Dashboard/MechanicPanel/MechanicFeedback";
+import MechanicJobHistory from "../pages/Dashboard/MechanicPanel/MechanicJobHistory";
+import MechanicUpdateJobStatus from "../pages/Dashboard/MechanicPanel/MechanicUpdateJobStatus";
 
 const AppRoutes = () => (
   <Routes>
@@ -52,20 +59,26 @@ const AppRoutes = () => (
     <Route path="/user/settings" element={<UserSettings />} />
     <Route path="/user/bookings" element={<CustomerBookings />} />
     <Route path="/user/contact-info" element={<ContactInfo />} />
-    <Route path="/user/order-confirmation" element={<OrderConfirmationPage/>}/>
-    
+    <Route path="/user/confirmation" element={<OrderConfirmationPage />} />
+    <Route path="/user/select-car" element={<SelectCar />} />
 
     {/* Admin Routes */}
     <Route path="/admin/dashboard" element={<AdminDashboard />} />
     <Route path="/admin/all-bookings" element={<AdminAllBookings />} />
     <Route path="/admin/all-services" element={<AdminAllServices />} />
     <Route path="/admin/all-users" element={<AdminAllUsers />} />
+    <Route path="/admin/all-mechanics" element={<AdminAllMechanics />} />
+    <Route path="/admin/all-cars" element={<AdminAllCars />} />
     <Route path="/admin/add-service" element={<AddService />} />
     <Route path="/admin/view-report" element={<ViewReport />} />
     <Route path="/admin/feedback-response" element={<FeedbackResponse />} />
 
-    {/* Mechanic Routes */}
-    <Route path="/dashboard/mechanic" element={<MechanicDashboard />} />
+    {/* mechanic Routes */}
+    <Route path="/mechanic/dashboard" element={<MechanicDashboard />} />
+    <Route path="/mechanic/assigned-jobs" element={<MechanicAssignedJobs />} />
+    <Route path="/mechanic/job-history" element={<MechanicJobHistory />} />
+    <Route path="/mechanic/update-job-status" element={<MechanicUpdateJobStatus />}/>
+    <Route path="/mechanic/feedback" element={<MechanicFeedback />} />
 
     {/* Catch-all for 404 */}
     <Route path="*" element={<PageNotFound />} />

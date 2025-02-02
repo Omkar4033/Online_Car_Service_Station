@@ -16,7 +16,7 @@ export const fetchServicesByCategory = async (categoryId) => {
     const response = await axios.get(`http://localhost:8080/api/services/category/${categoryId}`);
     
     return response.data.map((item) => ({
-      id: item.id ,
+      id: item.serviceId ,
       name: item.name,
       description: item.description,
       price: parseFloat(item.price),

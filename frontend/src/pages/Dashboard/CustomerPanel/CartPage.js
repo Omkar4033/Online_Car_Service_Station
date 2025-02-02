@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFromCart } from "../../../redux/actions/cartActions"; // Import the remove action
 import ProgressBar from "./ProgressBar"; // Import the timeline component
+import { FaTrashAlt } from "react-icons/fa"; // Import trash can icon from React Icons
 
 const CartPage = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
@@ -19,13 +20,10 @@ const CartPage = () => {
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
       }`}
     >
-      
-
-      {/* Progress Bar */}
-
       {/* Main Content */}
       <main className="flex-grow w-full max-w-4xl mx-auto p-6">
-      <ProgressBar currentStep="cart" darkMode={darkMode} />
+        {/* Progress Bar */}
+        <ProgressBar currentStep="cart" darkMode={darkMode} />
         <h2 className="text-2xl font-semibold mb-6">Your Cart</h2>
 
         {/* Cart Items */}
@@ -47,16 +45,16 @@ const CartPage = () => {
                   <p className="text-lg font-bold mt-2">₹{service?.price.toFixed(2)}</p>
                 </div>
 
-                {/* Remove Button */}
+                {/* Remove Button with Trash Icon */}
                 <button
-                  className={`px-4 py-2 rounded-md text-white ${
+                  className={`p-2 rounded-md ${
                     darkMode
                       ? "bg-red-500 hover:bg-red-400"
                       : "bg-red-400 hover:bg-red-500"
                   }`}
                   onClick={() => dispatch(removeFromCart(service.id))}
                 >
-                  Remove
+                  <FaTrashAlt className="text-white text-lg" />
                 </button>
               </div>
             ))
@@ -69,7 +67,7 @@ const CartPage = () => {
             <p className="text-xl font-bold">Total: ₹{totalPrice.toFixed(2)}</p>
 
             {/* Checkout Button */}
-            <Link to="/user/contact-info">
+            <Link to="/user/select-car">
               <button
                 className={`px-6 py-3 rounded-md font-semibold ${
                   darkMode
@@ -77,7 +75,7 @@ const CartPage = () => {
                     : "bg-yellow-400 text-white hover:bg-yellow-500"
                 }`}
               >
-                Checkout
+                Next
               </button>
             </Link>
           </div>

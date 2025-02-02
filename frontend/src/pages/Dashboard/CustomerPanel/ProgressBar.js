@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ProgressBar = ({ currentStep, darkMode }) => {
-  const steps = ["cart", "contact-info", "payment", "order-confirmation"];
+  const steps = [ "cart","select-car", "contact-info", "payment", "confirmation"];
   const currentIndex = steps.indexOf(currentStep);
 
   return (
@@ -27,7 +27,7 @@ const ProgressBar = ({ currentStep, darkMode }) => {
             </div>
           </Link>
           <span className="mx-2 font-semibold capitalize">
-            {step}
+            {step.replace(/-/g, ' ')}
           </span>
           {index < steps.length - 1 && (
             <div

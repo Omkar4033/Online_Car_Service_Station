@@ -7,20 +7,22 @@ const AdminSidebar = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode); // Get dark mode state
   const location = useLocation(); // Get current location
 
+  // Updated menuItems with "All Mechanics" and "All Cars" added
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard", icon: <FaTachometerAlt /> },
     { name: "All Services", path: "/admin/all-services", icon: <FaCogs /> },
     { name: "All Bookings", path: "/admin/all-bookings", icon: <FaClipboardList /> },
     { name: "All Users", path: "/admin/all-users", icon: <FaUsers /> },
+    { name: "All Mechanics", path: "/admin/all-mechanics", icon: <FaUsers /> }, 
+    { name: "All Cars", path: "/admin/all-cars", icon: <FaCogs /> }, 
     { name: "Add a Service", path: "/admin/add-service", icon: <FaPlusCircle /> },
     { name: "View Report", path: "/admin/view-report", icon: <FaChartBar /> },
     { name: "Response to Feedback", path: "/admin/feedback-response", icon: <FaComments /> },
+   
   ];
 
   return (
-    <aside
-      className={`w-1/5 p-6 ${darkMode ? "bg-gray-800" : "bg-white"} shadow-lg`}
-    >
+    <aside className={`w-1/5 p-6 ${darkMode ? "bg-gray-800" : "bg-white"} shadow-lg`}>
       <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
       <ul className="space-y-4">
         {menuItems.map((item, index) => (
