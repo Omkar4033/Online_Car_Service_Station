@@ -5,7 +5,7 @@ const ServiceCard = ({ service, darkMode, addToCartHandler }) => {
   return (
     <div
       className={`p-4 rounded-lg shadow-md flex flex-col justify-between ${
-        darkMode ? 'bg-gray-800' : 'bg-white'
+        darkMode ? 'bg-gray-800' : 'bg-grey-200'
 
       } transition-all duration-300 transform hover:scale-105`}
     >
@@ -16,7 +16,7 @@ const ServiceCard = ({ service, darkMode, addToCartHandler }) => {
         className={`mt-4 py-2 px-4 rounded shadow ${
           darkMode
             ? 'bg-yellow-300 text-gray-900 hover:bg-yellow-300' // Bright yellow with dark text for dark mode
-            : 'bg-blue-400 text-grey-900 hover:bg-blue-400' // Softer blue color for light mode
+            : 'bg-gray-300 text-gray-800  font-semibold hover:bg-yellow-300' // Softer blue color for light mode
         }`}
         onClick={() => addToCartHandler(service)}
       >

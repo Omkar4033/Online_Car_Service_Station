@@ -70,7 +70,7 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
+              <div key={index} className="bg-grey-100 dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
                 <h3 className="text-xl font-semibold mb-4">{feature.title || "Feature Title"}</h3>
                 <p className="text-gray-700 dark:text-gray-300">{feature.description || "Feature Description"}</p>
               </div>

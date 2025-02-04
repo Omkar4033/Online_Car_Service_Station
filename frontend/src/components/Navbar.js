@@ -40,11 +40,11 @@ const Navbar = () => {
         </Link>
 
         {/* Navigation Links */}
-        <ul className="flex space-x-6 flex-grow justify-center">
+        <ul className="flex space-x-6  flex-grow justify-center">
           <li>
             <Link
               to="/"
-              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
             >
               Home
             </Link>
@@ -52,7 +52,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/services"
-              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/services" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/services" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
             >
               Services
             </Link>
@@ -61,7 +61,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/dashboard/customer"
-                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/dashboard/customer" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/dashboard/customer" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
               >
                 Dashboard
               </Link>
@@ -71,7 +71,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/admin/dashboard"
-                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/admin/dashboard" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/admin/dashboard" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
               >
                 Admin Dashboard
               </Link>
@@ -81,7 +81,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/mechanic/dashboard"
-                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/dashboard/mechanic" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/dashboard/mechanic" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
               >
                 Mechanic Dashboard
               </Link>
@@ -90,7 +90,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/about"
-              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/about" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/about" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
             >
               About Us
             </Link>
@@ -98,7 +98,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/contact"
-              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/contact" ? "border-b-2 border-solid border-yellow-300 font-semibold" : ""}`}
+              className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/contact" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
             >
               Contact Us
             </Link>
@@ -110,10 +110,10 @@ const Navbar = () => {
           {/* Dark Mode Toggle */}
           <button
             onClick={() => dispatch(toggleDarkMode())}
-            className="px-3 py-1 rounded transition duration-200 ease-in-out transform hover:bg-gray-300 dark:hover:bg-gray-600"
+            className="px-3 py-1  transition duration-200 ease-in-out transform "
           >
             {darkMode ? (
-              <MdLightMode className="h-8 w-8" />
+              <MdLightMode className="h-8 w-8 " />
             ) : (
               <MdDarkMode className="h-8 w-8" />
             )}

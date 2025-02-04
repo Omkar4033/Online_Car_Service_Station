@@ -2,7 +2,7 @@ import React from "react";
 
 const CustomerSideBar = ({ darkMode, setIsAddingCar }) => {
   return (
-    <aside className={`w-1/5 p-4 ${darkMode ? "bg-gray-800" : "bg-white"} shadow-lg`}>
+    <aside className={`w-1/5 p-4 ${darkMode ? "bg-gray-800" : "bg-grey-200"} shadow-lg`}>
       <div
         className={`flex items-center justify-center border-dashed border-2 p-6 rounded-lg ${
           darkMode ? "border-gray-600" : "border-black"

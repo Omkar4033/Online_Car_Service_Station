@@ -95,7 +95,7 @@ const ServiceContent = ({ darkMode }) => {
                   : "bg-yellow-500 text-gray-900"
                 : darkMode
                 ? "bg-gray-800 text-gray-100 hover:bg-gray-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                : "bg-gray-400 text-gray-800 hover:bg-gray-300"
             }`}
             onClick={() => handleCategoryClick(category.categoryId)}
           >

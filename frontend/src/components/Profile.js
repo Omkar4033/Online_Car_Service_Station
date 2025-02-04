@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserAlt, FaUserTie, FaShoppingCart, FaRegBookmark, FaCog, FaTachometerAlt, FaSignOutAlt, FaCar } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Profile = ({ isLoggedIn, darkMode, handleLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate(); // Use navigate to redirect after logout
+  const user = useSelector((state) => state.userData?.user); // Get user data from the Redux store
+  const navigate = useNavigate();
 
   // Toggle the dropdown menu
   const toggleDropdown = () => {
@@ -29,17 +31,31 @@ const Profile = ({ isLoggedIn, darkMode, handleLogout }) => {
     navigate("/"); // Redirect to the homepage or login page after logout
   };
 
+  // Get the first letter of the user's name
+  const getInitials = (name) => {
+    if (name) {
+      const nameParts = name.split(" "); // Split the name to handle first and last names
+      return nameParts.map(part => part.charAt(0).toUpperCase()).join(""); // Combine first letters of first and last name
+    }
+    return ""; // Return empty string if no name
+  };
+
   return (
-    <div className="relative">
+    <div className="relative  ">
       <button
-        className="bg-gray-200 dark:bg-gray-700 text-blue-600 px-3 py-1 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200 ease-in-out"
+        className="bg-gray-300 dark:bg-gray-600  text-yellow-600 px-3 py-1 rounded-3xl hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200 ease-in-out"
         onClick={toggleDropdown}
       >
         {isLoggedIn ? (
-          darkMode ? (
-            <FaUserTie className="text-2xl" /> // User icon for dark mode
+          user?.name ? (
+            // Display the user's first initials if name is available
+            <div className="text-3xl  font-bold">{getInitials((user.name).toUpperCase())}</div>
           ) : (
-            <FaUserAlt className="text-2xl" /> // User icon for light mode
+            darkMode ? (
+              <FaUserTie className="text-2xl" /> // User icon for dark mode
+            ) : (
+              <FaUserAlt className="text-2xl" /> // User icon for light mode
+            )
           )
         ) : (
           <span>Login / Register</span>
