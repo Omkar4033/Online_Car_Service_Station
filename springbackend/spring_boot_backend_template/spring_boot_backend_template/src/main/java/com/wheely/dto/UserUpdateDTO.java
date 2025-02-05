@@ -1,4 +1,4 @@
-package com.blogs.dto;
+package com.wheely.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

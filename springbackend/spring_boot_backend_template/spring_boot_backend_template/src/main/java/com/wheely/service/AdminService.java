@@ -1,19 +1,19 @@
-package com.blogs.service;
+package com.wheely.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.blogs.pojos.User;
-import com.blogs.pojos.UserRole;
-import com.blogs.pojos.Booking;
-import com.blogs.pojos.Category;
-import com.blogs.dao.UserRepository;
-import com.blogs.dto.ServiceDTO;
-import com.blogs.pojos.Car;
-import com.blogs.dao.BookingRepository;
-import com.blogs.dao.CarRepository;
-import com.blogs.dao.CategoryRepository;
-import com.blogs.dao.ServiceRepository;
+import com.wheely.dao.BookingRepository;
+import com.wheely.dao.CarRepository;
+import com.wheely.dao.CategoryRepository;
+import com.wheely.dao.ServiceRepository;
+import com.wheely.dao.UserRepository;
+import com.wheely.dto.ServiceDTO;
+import com.wheely.pojos.Booking;
+import com.wheely.pojos.Car;
+import com.wheely.pojos.Category;
+import com.wheely.pojos.User;
+import com.wheely.pojos.UserRole;
 
 import java.util.List;
 
@@ -46,16 +46,16 @@ public class AdminService {
 	}
 
 	// Get all services
-	public List<com.blogs.pojos.Service> getAllServices() {
+	public List<com.wheely.pojos.Service> getAllServices() {
 		return serviceRepository.findAll();
 	}
 
 	// Add service
-	public com.blogs.pojos.Service addService(ServiceDTO serviceDto) {
+	public com.wheely.pojos.Service addService(ServiceDTO serviceDto) {
 		Category category = categoryRepository.findById(serviceDto.getCategoryId())
 				.orElseThrow(() -> new RuntimeException("Category not found"));
 
-		com.blogs.pojos.Service service = new com.blogs.pojos.Service(serviceDto.getName(), serviceDto.getDescription(),
+		com.wheely.pojos.Service service = new com.wheely.pojos.Service(serviceDto.getName(), serviceDto.getDescription(),
 				serviceDto.getPrice(), category);
 		return serviceRepository.save(service);
 	}

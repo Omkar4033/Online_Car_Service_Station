@@ -1,4 +1,4 @@
-package com.blogs.pojos;
+package com.wheely.pojos;
 
 import java.util.List;
 

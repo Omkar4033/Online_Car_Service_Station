@@ -4,10 +4,12 @@ import { FaCarSide } from "react-icons/fa";
 import axios from "axios";
 import ProgressBar from "./ProgressBar";
 import { Link } from "react-router-dom";
+import { setBookingDetails } from "../../../redux/actions/bookingActions"; // Import the action
 
 const SelectCar = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
   const user = useSelector((state) => state.userData?.user);
+  const booking = useSelector((state) => state.booking); // Get current booking state
   const dispatch = useDispatch();
 
   const [cars, setCars] = useState([]);
@@ -38,8 +40,10 @@ const SelectCar = () => {
     fetchCars();
   }, [user]);
 
+  // Select car and update Redux state
   const handleSelectCar = (car) => {
     setSelectedCar(car);
+    dispatch(setBookingDetails({ carId: car.carId })); // Store car ID in Redux
   };
 
   return (
@@ -92,8 +96,7 @@ const SelectCar = () => {
           ))}
         </div>
 
-        
-
+        {/* Navigation Buttons */}
         <div className="flex justify-between mt-8">
           <Link to="/user/cart">
             <button
@@ -114,6 +117,7 @@ const SelectCar = () => {
                   ? "bg-yellow-500 text-gray-900 hover:bg-yellow-400"
                   : "bg-yellow-400 text-white hover:bg-yellow-500"
               }`}
+              disabled={!selectedCar} // Prevent next step if no car is selected
             >
               Next
             </button>

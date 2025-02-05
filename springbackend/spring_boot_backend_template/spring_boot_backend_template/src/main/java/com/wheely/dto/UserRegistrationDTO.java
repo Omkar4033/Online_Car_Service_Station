@@ -1,6 +1,6 @@
-package com.blogs.dto;
+package com.wheely.dto;
 
-import com.blogs.pojos.UserRole;
+import com.wheely.pojos.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,6 @@ public class UserRegistrationDTO {
     private String name;
     private String email;
     private String phoneNo;
-    private String address;
     private String password;
     private String role;
 }

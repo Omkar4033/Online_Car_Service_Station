@@ -1,8 +1,9 @@
-package com.blogs.controller;
+package com.wheely.controller;
 
-import com.blogs.dto.CategoryDTO;
-import com.blogs.service.CategoryService;
-import com.blogs.pojos.Category;
+import com.wheely.dto.CategoryDTO;
+import com.wheely.pojos.Category;
+import com.wheely.service.CategoryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

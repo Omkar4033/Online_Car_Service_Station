@@ -1,8 +1,8 @@
-package com.blogs.dao;
+package com.wheely.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.blogs.pojos.User;
+import com.wheely.pojos.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{

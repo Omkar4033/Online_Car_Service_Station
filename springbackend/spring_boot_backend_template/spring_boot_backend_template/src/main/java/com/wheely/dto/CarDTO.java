@@ -1,5 +1,5 @@
 
-package com.blogs.dto;
+package com.wheely.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

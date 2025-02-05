@@ -1,12 +1,13 @@
-package com.blogs.controller;
+package com.wheely.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.blogs.exception.ResourceNotFoundException;
-import com.blogs.pojos.Address;
-import com.blogs.service.AddressService;
+import com.wheely.exception.ResourceNotFoundException;
+import com.wheely.pojos.Address;
+import com.wheely.service.AddressService;
+
 import java.util.List;
 
 @RestController

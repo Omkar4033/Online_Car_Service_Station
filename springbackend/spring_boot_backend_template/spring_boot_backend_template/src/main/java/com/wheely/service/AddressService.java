@@ -1,16 +1,16 @@
-package com.blogs.service;
+package com.wheely.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blogs.dao.AddressRepository;
-import com.blogs.dao.BookingRepository;
-import com.blogs.dao.UserRepository;
-import com.blogs.exception.ResourceNotFoundException;
-import com.blogs.pojos.Address;
-import com.blogs.pojos.Booking;
-import com.blogs.pojos.User;
+import com.wheely.dao.AddressRepository;
+import com.wheely.dao.BookingRepository;
+import com.wheely.dao.UserRepository;
+import com.wheely.exception.ResourceNotFoundException;
+import com.wheely.pojos.Address;
+import com.wheely.pojos.Booking;
+import com.wheely.pojos.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +33,26 @@ public class AddressService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
 
-        address.setUser(user);
-        return addressRepository.save(address);
+        Address managedAddress;
+        
+        if (address.getAddressId() != null) { // Check if address already exists
+            managedAddress = addressRepository.findById(address.getAddressId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Address with ID " + address.getAddressId() + " not found"));
+            
+            // Update the existing address details
+            managedAddress.setMobile(address.getMobile());
+            managedAddress.setLandMark(address.getLandMark());
+            managedAddress.setCity(address.getCity());
+            managedAddress.setPinCode(address.getPinCode());
+            managedAddress.setState(address.getState());
+            managedAddress.setCountry(address.getCountry());
+        } else {
+            // New Address
+            managedAddress = address;
+        }
+
+        managedAddress.setUser(user); // Ensure user is correctly associated
+        return addressRepository.save(managedAddress);
     }
 
  // Get all addresses by user ID

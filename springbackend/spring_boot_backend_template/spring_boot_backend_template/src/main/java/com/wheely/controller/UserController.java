@@ -1,17 +1,17 @@
-package com.blogs.controller;
+package com.wheely.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.blogs.dto.UserUpdateDTO;
-import com.blogs.dto.UserLoginRequestDTO;
-import com.blogs.dto.UserRegistrationDTO;
-import com.blogs.pojos.Car;
-import com.blogs.pojos.User;
-import com.blogs.pojos.UserRole;
-import com.blogs.service.UserService;
+import com.wheely.dto.UserLoginRequestDTO;
+import com.wheely.dto.UserRegistrationDTO;
+import com.wheely.dto.UserUpdateDTO;
+import com.wheely.pojos.Car;
+import com.wheely.pojos.User;
+import com.wheely.pojos.UserRole;
+import com.wheely.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,7 +41,6 @@ public class UserController {
             newUser.setName(registrationDTO.getName());
             newUser.setEmail(registrationDTO.getEmail());
             newUser.setPhoneNo(registrationDTO.getPhoneNo());
-            newUser.setAddress(registrationDTO.getAddress());
             newUser.setPassword(registrationDTO.getPassword());
             System.out.println(newUser);
 

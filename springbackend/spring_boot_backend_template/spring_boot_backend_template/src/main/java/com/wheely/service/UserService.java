@@ -1,13 +1,13 @@
-package com.blogs.service;
+package com.wheely.service;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.blogs.dao.UserRepository;
-import com.blogs.dto.UserUpdateDTO;
-import com.blogs.pojos.User;
+import com.wheely.dao.UserRepository;
+import com.wheely.dto.UserUpdateDTO;
+import com.wheely.pojos.User;
 
 import jakarta.transaction.Transactional;
 
@@ -54,7 +54,6 @@ public class UserService {
         User userToUpdate = userRepository.findById(id).orElseThrow();
         if (userToUpdate != null) {
             userToUpdate.setName(userUpdateDTO.getName());
-            userToUpdate.setAddress(userUpdateDTO.getAddress());
             userToUpdate.setEmail(userUpdateDTO.getEmail());
             userRepository.save(userToUpdate);
             return "Updated successfully!";

@@ -1,7 +1,7 @@
-package com.blogs.pojos;
+package com.wheely.pojos;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,7 +19,7 @@ public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Service_ID")
-    private Long serviceId; // Renamed to follow camelCase
+    private Long serviceId;
 
     @Column(name = "Name", nullable = false)
     private String name;
@@ -34,22 +34,13 @@ public class Service {
     @JoinColumn(name = "Category_ID", nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(mappedBy = "services")
     @JsonIgnore
-    private List<Booking> bookings = new ArrayList<>(); // Initialize to avoid NullPointerException
+    private Set<Booking> bookings = new HashSet<>(); // Set to avoid duplicate entries
 
-    // Helper methods to manage bidirectional relationships
-    public void addBooking(Booking booking) {
-        bookings.add(booking);
-        booking.setService(this); // Maintain bidirectional relationship
-    }
-
-    public void removeBooking(Booking booking) {
-        bookings.remove(booking);
-        booking.setService(null); // Maintain bidirectional relationship
-    }
     
-    public Service(String name, String description, double price, Category category) {
+
+    public Service(String name, String description, Double price, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;

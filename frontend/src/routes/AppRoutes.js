@@ -21,6 +21,7 @@ import UserSettings from "../pages/Dashboard/CustomerPanel/Settings";
 import CustomerBookings from "../pages/Dashboard/CustomerPanel/CustomerBookings";
 import OrderConfirmationPage from "../pages/Dashboard/CustomerPanel/OrderConfirmation";
 import SelectCar from "../pages/Dashboard/CustomerPanel/SelectCar";
+import BookingDetails from "../pages/Dashboard/CustomerPanel/BookingDetails";
 
 // Admin Panel
 import AdminDashboard from "../pages/Dashboard/AdminPanel/AdminDashboard";
@@ -61,6 +62,7 @@ const AppRoutes = () => (
     <Route path="/user/contact-info" element={<ContactInfo />} />
     <Route path="/user/confirmation" element={<OrderConfirmationPage />} />
     <Route path="/user/select-car" element={<SelectCar />} />
+    <Route path="/user/booking/:bookingId" element={<BookingDetails />} />
 
     {/* Admin Routes */}
     <Route path="/admin/dashboard" element={<AdminDashboard />} />

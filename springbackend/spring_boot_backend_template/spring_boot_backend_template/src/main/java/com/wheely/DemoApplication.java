@@ -1,9 +1,9 @@
-package com.blogs;
+package com.wheely;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.blogs")
+@SpringBootApplication(scanBasePackages = "com.wheely")
 public class DemoApplication {
 
 	public static void main(String[] args) {

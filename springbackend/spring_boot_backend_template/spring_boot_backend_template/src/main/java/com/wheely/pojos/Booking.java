@@ -1,95 +1,72 @@
-package com.blogs.pojos;
+package com.wheely.pojos;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-//import lombok.Getter;
-import lombok.NoArgsConstructor;
-//import lombok.Setter;
-//
-//@Getter
-//@Setter
-@NoArgsConstructor
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+
 @Entity
 @Table(name = "Bookings")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString(exclude = {"services", "mechanic"}) // Prevent infinite recursion
 public class Booking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BookingId")
+    @Column(name = "Booking_ID")
     private Long bookingId;
 
-    @Column(name = "BookingDate")
-    private LocalDate bookingDate;
+    @Column(name = "Booking_Date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date bookingDate = new Date(); // Default to current date and time
 
-    @Column(name = "Status", nullable = false)  // Assuming status cannot be null
-    private String status;
-    
-    @ManyToOne(cascade = CascadeType.MERGE)  // Consider more specific cascade types
-    @JoinColumn(name = "ServiceId", nullable = false)
-    private Service service;
-    
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "UserId", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Booking_Status", columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
+    private BookingStatus bookingStatus = BookingStatus.PENDING;
+
+    @Column(name = "Total_Amount")
+    private Double totalAmount; // Removed nullable constraint
+
+    @ManyToOne
+    @JoinColumn(name = "User_ID", referencedColumnName = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "CenterId", nullable = false)
-    private Service_Center center;
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
-	public Long getBookingId() {
-		return bookingId;
-	}
+    @ManyToMany
+    @JoinTable(
+        name = "booking_services", 
+        joinColumns = @JoinColumn(name = "booking_id"), 
+        inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    @JsonIgnore
+    private Set<Service> services = new HashSet<>();
 
-	public void setBookingId(Long bookingId) {
-		this.bookingId = bookingId;
-	}
+    @ManyToOne
+    @JoinColumn(name = "Address_ID", referencedColumnName = "address_id", nullable = false)
+    private Address address;
 
-	public LocalDate getBookingDate() {
-		return bookingDate;
-	}
 
-	public void setBookingDate(LocalDate bookingDate) {
-		this.bookingDate = bookingDate;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Service getService() {
-		return service;
-	}
-
-	public void setService(Service service) {
-		this.service = service;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Service_Center getCenter() {
-		return center;
-	}
-
-	public void setCenter(Service_Center center) {
-		this.center = center;
-	}
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Mechanic_ID", referencedColumnName = "user_id")
     
+    private User mechanic;
+
+    // Constructor
+    public Booking(User user, Set<Service> services, Address address, User mechanic, BookingStatus bookingStatus, Double totalAmount) {
+        this.user = user;
+        this.services = services;
+        this.address = address;
+        this.mechanic = mechanic;
+        this.bookingStatus = bookingStatus;
+        this.totalAmount = totalAmount;
+    }
 }

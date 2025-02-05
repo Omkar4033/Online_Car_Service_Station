@@ -1,24 +1,15 @@
-package com.blogs.pojos;
+package com.wheely.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = "user") // Exclude user to avoid recursion in bidirectional relationship
+@ToString(exclude = {"user", "bookings"}) // Exclude user & bookings to prevent infinite recursion
 @Entity
 @Table(name = "cars")
 public class Car {
@@ -28,24 +19,28 @@ public class Car {
     @Column(name = "Car_ID")
     private Long carId;
 
-    @Column(name = "Company", nullable = false, length = 50) // Make cannot be null
+    @Column(name = "Company", nullable = false, length = 50)
     private String company;
 
-    @Column(name = "Model", nullable = false, length = 50) // Model cannot be null
+    @Column(name = "Model", nullable = false, length = 50)
     private String model;
 
-    @Column(name = "Fuel_Type", nullable = false, length = 20) // Changed to Fuel_Type
-    private String fuelType; // New field for fuel type (e.g., Petrol, Diesel, Electric)
+    @Column(name = "Fuel_Type", nullable = false, length = 20)
+    private String fuelType;
 
-    @Column(name = "Registration_Number", nullable = false, unique = true, length = 20) // Unique registration number
+    @Column(name = "Registration_Number", nullable = false, unique = true, length = 20)
     private String registration;
 
     @ManyToOne
-    @JoinColumn(name = "User_ID", nullable = false) // Mandatory relationship with User
+    @JoinColumn(name = "User_ID", nullable = false)
     @JsonIgnore
     private User user;
-    
-    
+
+    // ✅ Add One-to-Many relationship with Booking
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<Booking> bookings;
+
     public Car(String company, String model, String fuelType, String registration, User user) {
         this.company = company;
         this.model = model;

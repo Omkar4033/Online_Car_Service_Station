@@ -1,10 +1,10 @@
-package com.blogs.service;
+package com.wheely.service;
 
-import com.blogs.pojos.Car;
-import com.blogs.pojos.User;
-import com.blogs.dao.CarRepository;
-import com.blogs.dao.UserRepository;
-import com.blogs.dto.CarDTO;
+import com.wheely.dao.CarRepository;
+import com.wheely.dao.UserRepository;
+import com.wheely.dto.CarDTO;
+import com.wheely.pojos.Car;
+import com.wheely.pojos.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

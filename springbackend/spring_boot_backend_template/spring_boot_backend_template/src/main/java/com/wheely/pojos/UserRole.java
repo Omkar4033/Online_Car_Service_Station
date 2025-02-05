@@ -1,4 +1,4 @@
-package com.blogs.pojos;
+package com.wheely.pojos;
 
 public enum UserRole {
 

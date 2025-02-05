@@ -1,16 +1,16 @@
-package com.blogs.controller;
+package com.wheely.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.blogs.pojos.User;
-import com.blogs.dto.ServiceDTO;
-import com.blogs.pojos.Booking;
-import com.blogs.pojos.Car;
-import com.blogs.pojos.Service;
-import com.blogs.service.AdminService; // Create an AdminService for handling business logic
+import com.wheely.dto.ServiceDTO;
+import com.wheely.pojos.Booking;
+import com.wheely.pojos.Car;
+import com.wheely.pojos.Service;
+import com.wheely.pojos.User;
+import com.wheely.service.AdminService;
 
 import java.util.List;
 

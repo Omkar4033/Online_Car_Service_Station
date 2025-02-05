@@ -1,6 +1,6 @@
-package com.blogs.dto;
+package com.wheely.dto;
 
-import com.blogs.pojos.Category;
+import com.wheely.pojos.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

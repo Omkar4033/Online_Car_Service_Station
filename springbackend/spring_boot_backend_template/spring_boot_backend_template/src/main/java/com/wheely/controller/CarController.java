@@ -1,9 +1,9 @@
-package com.blogs.controller;
+package com.wheely.controller;
 
-import com.blogs.dto.CarDTO;
-import com.blogs.pojos.Car;
-import com.blogs.service.CarService;
-import com.blogs.service.UserService;
+import com.wheely.dto.CarDTO;
+import com.wheely.pojos.Car;
+import com.wheely.service.CarService;
+import com.wheely.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

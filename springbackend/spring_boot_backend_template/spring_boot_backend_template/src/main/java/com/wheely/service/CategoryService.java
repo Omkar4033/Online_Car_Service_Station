@@ -1,8 +1,9 @@
-package com.blogs.service;
+package com.wheely.service;
 
-import com.blogs.dao.CategoryRepository;
-import com.blogs.dto.CategoryDTO;
-import com.blogs.pojos.Category;
+import com.wheely.dao.CategoryRepository;
+import com.wheely.dto.CategoryDTO;
+import com.wheely.pojos.Category;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

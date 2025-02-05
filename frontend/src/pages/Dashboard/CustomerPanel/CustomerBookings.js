@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const CustomerBookings = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Dummy booking data (This can be fetched from an API)
-  const [bookings, setBookings] = useState([
-    {
-      id: 1,
-      service: "Oil Change",
-      date: "2024-12-15",
-      status: "Confirmed",
-      price: 50,
-    },
-    {
-      id: 2,
-      service: "Tire Rotation",
-      date: "2024-12-20",
-      status: "Pending",
-      price: 30,
-    },
-    {
-      id: 3,
-      service: "Brake Fluid Replacement",
-      date: "2024-12-22",
-      status: "Confirmed",
-      price: 40,
-    },
-  ]);
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const userId = 1; // Replace with actual user ID from authentication
+        const response = await axios.get(
+          `http://localhost:8080/api/bookings/user/${userId}`
+        );
+        setBookings(response.data);
+      } catch (err) {
+        setError("Failed to fetch bookings. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBookings();
+  }, []);
 
   return (
     <div
@@ -36,40 +32,71 @@ const CustomerBookings = () => {
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
       }`}
     >
-      
+      <main className="flex flex-wrap w-full p-8 space-y-8">
+        <h2 className="w-full text-3xl font-semibold mb-6">Your Bookings</h2>
 
-      {/* Main Content */}
-      <main className="w-3/4 p-6">
-        <h2 className="text-2xl font-semibold mb-8">Your Bookings</h2>
-
-        {/* Booking List */}
-        <div className="grid grid-cols-1 gap-4">
-          {bookings.map((booking) => (
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : bookings.length === 0 ? (
+          <p>No bookings found.</p>
+        ) : (
+          bookings.map((booking) => (
             <div
-              key={booking.id}
-              className={`p-4 rounded-lg shadow-md flex justify-between items-center ${
+              key={booking.bookingId}
+              className={`flex flex-col w-full lg:w-1/3 p-6 rounded-lg shadow-lg ${
                 darkMode ? "bg-gray-800" : "bg-white"
-              }`}
+              } transition-all`}
             >
-              <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">{booking.service}</h3>
-                <p className="text-sm">{booking.date}</p>
+              <div className="flex flex-col space-y-4">
+                <h3 className="text-xl font-semibold text-yellow-500">
+                  Service: {booking.car.model}
+                </h3>
+                <p className="text-sm">
+                  Date: {new Date(booking.bookingDate).toLocaleDateString()}
+                </p>
+                <p className="text-sm">
+                  Car: {booking.car.company} {booking.car.model} (
+                  {booking.car.fuelType})
+                </p>
+                <p className="text-sm">
+                  Address:{" "}
+                  {`${booking.address.landMark}, ${booking.address.city}, ${booking.address.state}, ${booking.address.country}`}
+                </p>
+                <p className="text-sm">
+                  Mechanic: {booking.mechanicName || "Not assigned"}
+                </p>
+                <p className="text-sm">Total Amount: ${booking.totalAmount}</p>
+
+                {/* Services Display */}
+                <div className="border-t pt-2">
+                  <h4 className="text-md font-semibold">Services Included:</h4>
+                  <ul className="list-disc pl-5 text-sm">
+                    {booking.services?.map((service, index) => (
+                      <li key={index}>{service}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Booking Status */}
                 <p
                   className={`text-sm font-bold ${
-                    booking.status === "Confirmed"
+                    booking.bookingStatus === "CONFIRMED"
                       ? "text-green-500"
-                      : booking.status === "Pending"
+                      : booking.bookingStatus === "PENDING"
                       ? "text-yellow-500"
                       : "text-red-500"
                   }`}
                 >
-                  {booking.status}
+                  Status: {booking.bookingStatus}
                 </p>
               </div>
-              <p className="text-lg font-bold">${booking.price}</p>
+
+              {/* View Details Button */}
               <Link
-                to={`/customer/booking/${booking.id}`}
-                className={`py-2 px-4 rounded-md ${
+                to={`/user/booking/${booking.bookingId}`}
+                className={`mt-2 py-2 px-4 rounded-md inline-block ${
                   darkMode
                     ? "bg-yellow-500 text-gray-100 hover:bg-yellow-400"
                     : "bg-yellow-400 text-white hover:bg-yellow-500"
@@ -78,8 +105,8 @@ const CustomerBookings = () => {
                 View Details
               </Link>
             </div>
-          ))}
-        </div>
+          ))
+        )}
       </main>
     </div>
   );
