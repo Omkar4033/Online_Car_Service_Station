@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import {clearCart} from "../../../redux/actions/cartActions";
+import { clearCart } from "../../../redux/actions/cartActions";
 import { useNavigate } from "react-router-dom";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const CheckoutForm = ({ amount, darkMode }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const bookingData=useSelector((state) => state.booking);
+  const bookingData = useSelector((state) => state.booking);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,6 +20,15 @@ const CheckoutForm = ({ amount, darkMode }) => {
     setLoading(true);
 
     try {
+      const bookingResponse = await fetch(
+        "http://localhost:8080/api/bookings/save",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(bookingData),
+        }
+      );
+
       const response = await fetch(
         "http://localhost:8080/api/payment/create-payment-intent",
         {
@@ -46,19 +55,9 @@ const CheckoutForm = ({ amount, darkMode }) => {
           },
         }
       );
-      console.log('before sending request - ')
+      console.log("before sending request - ");
       console.log(JSON.stringify(bookingData));
 
-      const bookingResponse = await fetch(
-        "http://localhost:8080/api/bookings/save",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(bookingData),
-        }
-      );
-      
-      
       dispatch(clearCart());
       alert("Booking saved successfully!");
 

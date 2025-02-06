@@ -36,9 +36,10 @@ import AdminAllCars from "../pages/Dashboard/AdminPanel/AdminAllCars";
 
 // Mechanic Panel
 import MechanicDashboard from "../pages/Dashboard/MechanicPanel/MechanicDashboard";
-import MechanicAssignedJobs from "../pages/Dashboard/MechanicPanel/MechanicAssignedJobs";
+import MechanicPendingJobs from "../pages/Dashboard/MechanicPanel/MechanicPendingJobs";
 import MechanicFeedback from "../pages/Dashboard/MechanicPanel/MechanicFeedback";
 import MechanicJobHistory from "../pages/Dashboard/MechanicPanel/MechanicJobHistory";
+import MechanicAcceptedJobs from "../pages/Dashboard/MechanicPanel/MechanicAcceptedJobs";
 import MechanicUpdateJobStatus from "../pages/Dashboard/MechanicPanel/MechanicUpdateJobStatus";
 
 const AppRoutes = () => (
@@ -77,9 +78,10 @@ const AppRoutes = () => (
 
     {/* mechanic Routes */}
     <Route path="/mechanic/dashboard" element={<MechanicDashboard />} />
-    <Route path="/mechanic/assigned-jobs" element={<MechanicAssignedJobs />} />
+    <Route path="/mechanic/pending-jobs" element={<MechanicPendingJobs />} />
     <Route path="/mechanic/job-history" element={<MechanicJobHistory />} />
     <Route path="/mechanic/update-job-status" element={<MechanicUpdateJobStatus />}/>
+    <Route path="/mechanic/accepted-jobs" element={<MechanicAcceptedJobs />} />
     <Route path="/mechanic/feedback" element={<MechanicFeedback />} />
 
     {/* Catch-all for 404 */}

@@ -49,7 +49,7 @@ const Profile = ({ isLoggedIn, darkMode, handleLogout }) => {
         {isLoggedIn ? (
           user?.name ? (
             // Display the user's first initials if name is available
-            <div className="text-3xl  font-bold">{getInitials((user.name).toUpperCase())}</div>
+            <div className="text-3xl  font-bold">{user.name.toUpperCase().charAt(0)}</div>
           ) : (
             darkMode ? (
               <FaUserTie className="text-2xl" /> // User icon for dark mode

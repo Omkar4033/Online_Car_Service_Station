@@ -2,6 +2,7 @@ package com.wheely.pojos;
 
 public enum BookingStatus {
 	 PENDING,
-	    ASSIGNED,
-	    COMPLETED
+	    ACCEPTED,
+	    COMPLETED,
+	    CANCELED
 }

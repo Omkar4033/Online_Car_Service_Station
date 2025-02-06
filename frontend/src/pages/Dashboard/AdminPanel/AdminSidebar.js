@@ -33,7 +33,7 @@ const AdminSidebar = () => {
                 ? darkMode
                   ? "bg-yellow-400 text-gray-900"
                   : "bg-yellow-300 text-gray-800"
-                : "hover:bg-yellow-400 hover:text-gray-900"
+                : "hover:bg-gray-400 hover:text-gray-900"
             }`}
           >
             <span className="text-xl">{item.icon}</span> {/* Icon here */}

@@ -55,7 +55,7 @@ public class Booking {
     private Address address;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Mechanic_ID", referencedColumnName = "user_id")
     
     private User mechanic;

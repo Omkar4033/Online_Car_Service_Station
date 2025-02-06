@@ -1,6 +1,7 @@
 package com.wheely.controller;
 
 import com.wheely.dto.BookingRequestDTO;
+import com.wheely.dto.BookingStatusUpdateDTO;
 import com.wheely.pojos.Booking;
 import com.wheely.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class BookingController {
         }
     }
 
-    // ✅ New route to get all bookings for a specific user
+    // ✅ Get all bookings for a specific user
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getBookingsByUser(@PathVariable Long userId) {
         try {
@@ -42,7 +43,7 @@ public class BookingController {
         }
     }
 
-    // ✅ New route to get booking details by bookingId
+    // ✅ Get booking details by bookingId
     @GetMapping("/{bookingId}")
     public ResponseEntity<?> getBookingById(@PathVariable Long bookingId) {
         try {
@@ -55,6 +56,56 @@ public class BookingController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    // ✅ Get all bookings with pending status
+    @GetMapping("/pending")
+    public ResponseEntity<?> getPendingBookings() {
+        try {
+            List<Booking> pendingBookings = bookingService.getBookingsByStatus("pending");
+            return ResponseEntity.ok(pendingBookings);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+    
+    
+
+    @GetMapping("/mechanic/{mechanicId}")
+    public ResponseEntity<?> getBookingsByMechanic(
+            @PathVariable Long mechanicId,
+            @RequestParam(required = false) String status) {
+        try {
+            List<Booking> bookings;
+            if (status != null) {
+                bookings = bookingService.getBookingsByMechanicAndStatus(mechanicId, status.toUpperCase());
+            } else {
+                bookings = bookingService.getBookingsByMechanic(mechanicId);
+            }
+            return ResponseEntity.ok(bookings);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    
+ // ✅ Update job status using PATCH
+    @PatchMapping("/{bookingId}/{mechanicId}")
+    public ResponseEntity<?> updateJobStatus( @PathVariable Long bookingId,@PathVariable Long mechanicId,@RequestBody BookingStatusUpdateDTO statusUpdate) {
+        try {
+            if (statusUpdate.getStatus() == null || statusUpdate.getStatus().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Error: Status cannot be empty");
+            }
+
+            Booking updatedBooking = bookingService.updateJobStatus(bookingId, mechanicId, statusUpdate.getStatus());
+            return ResponseEntity.ok(updatedBooking);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error: " + e.getMessage());
         }
     }
 }
