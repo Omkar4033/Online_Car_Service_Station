@@ -110,7 +110,7 @@ const SelectCar = () => {
             </button>
           </Link>
 
-          <Link to="/user/contact-info">
+          <Link to="/user/address">
             <button
               className={`px-6 py-3 rounded-md font-semibold ${
                 darkMode

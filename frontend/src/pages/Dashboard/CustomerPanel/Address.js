@@ -6,7 +6,7 @@ import { FaUserCircle } from "react-icons/fa";
 import axios from "axios";
 import ProgressBar from "./ProgressBar";
 
-const ContactInfo = () => {
+const Address = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
   const user = useSelector((state) => state.userData?.user);
   const booking = useSelector((state) => state.booking);
@@ -24,6 +24,9 @@ const ContactInfo = () => {
     state: "",
     country: "",
   });
+
+  console.log("contact details -")
+  console.log(JSON.stringify(newContact));
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -221,4 +224,4 @@ const ContactInfo = () => {
   );
 };
 
-export default ContactInfo;
+export default Address;

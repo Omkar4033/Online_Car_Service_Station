@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.wheely.dao.*;
 import com.wheely.dto.*;
+import com.wheely.exception.ResourceNotFoundException;
 import com.wheely.pojos.*;
 import jakarta.transaction.Transactional;
 
@@ -93,38 +94,65 @@ public class BookingService {
         return bookingRepository.findByMechanicUserId(mechanicId);
     }
     
+    public List<Booking> getBookingsByMechanicAndStatus(Long mechanicId, String status) {
+    	try {
+    		BookingStatus bookingStatus = BookingStatus.valueOf(status); // Convert string to enum
+    		return bookingRepository.findByMechanicUserIdAndBookingStatus(mechanicId, bookingStatus);
+    	} catch (IllegalArgumentException e) {
+    		throw new IllegalArgumentException("Invalid booking status: " + status);
+    	}
+    }
     
-    public Booking updateJobStatus(Long bookingId, Long mechanicId, String status) {
+    public Booking updateJobStatus(Long bookingId, BookingStatusUpdateDTO statusUpdate) {
+        if (statusUpdate.getMechanicId() == null || statusUpdate.getStatus() == null || statusUpdate.getStatus().isEmpty()) {
+            throw new IllegalArgumentException("Mechanic ID and status are required");
+        }
+
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
-
-        User mechanic = userRepository.findById(mechanicId)
+        User mechanic = userRepository.findById(statusUpdate.getMechanicId())
                 .orElseThrow(() -> new IllegalArgumentException("Mechanic not found"));
 
         if (booking.getMechanic() == null) {
             booking.setMechanic(mechanic);
-        } else if (!booking.getMechanic().getUserId().equals(mechanicId)) {
+        } else if (!booking.getMechanic().getUserId().equals(statusUpdate.getMechanicId())) {
             throw new IllegalStateException("Mechanic not authorized to update this booking");
         }
 
-        try {
-            BookingStatus newStatus = BookingStatus.valueOf(status.toUpperCase());
-            booking.setBookingStatus(newStatus);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid booking status: " + status);
-        }
+        BookingStatus newStatus = BookingStatus.valueOf(statusUpdate.getStatus().toUpperCase());
+  
 
+        booking.setBookingStatus(newStatus);
         return bookingRepository.save(booking);
     }
+
     
-    public List<Booking> getBookingsByMechanicAndStatus(Long mechanicId, String status) {
-        try {
-            BookingStatus bookingStatus = BookingStatus.valueOf(status); // Convert string to enum
-            return bookingRepository.findByMechanicUserIdAndBookingStatus(mechanicId, bookingStatus);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid booking status: " + status);
+    // marks job as complete
+    public Booking completeJob(Long bookingId, BookingStatusUpdateDTO statusUpdate) {
+        if (statusUpdate.getMechanicId() == null || statusUpdate.getCustomerPhoneNo() == null) {
+            throw new IllegalArgumentException("Valid mechanic ID and customer phone number are required to complete the job.");
         }
+
+        // Fetch the booking
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with ID: " + bookingId));
+
+        // Validate if the mechanic is assigned to this booking
+        if (booking.getMechanic() == null || !booking.getMechanic().getUserId().equals(statusUpdate.getMechanicId())) {
+            throw new IllegalStateException("Mechanic not authorized to complete this booking.");
+        }
+
+        // Validate customer phone number
+        String actualPhoneNo = booking.getUser().getPhoneNo(); // Assuming `getPhoneNo()` exists in User entity
+        if (!actualPhoneNo.equals(statusUpdate.getCustomerPhoneNo())) {
+            throw new IllegalArgumentException("Provided phone number does not match the customer's registered phone number.");
+        }
+
+        // Update status
+        booking.setBookingStatus(BookingStatus.COMPLETED);
+        return bookingRepository.save(booking);
     }
+
 
 	
 }

@@ -14,7 +14,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin() // Allow frontend access
+@CrossOrigin() 
 public class BookingController {
 
     @Autowired
@@ -90,22 +90,28 @@ public class BookingController {
                     .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
-
     
- // ✅ Update job status using PATCH
-    @PatchMapping("/{bookingId}/{mechanicId}")
-    public ResponseEntity<?> updateJobStatus( @PathVariable Long bookingId,@PathVariable Long mechanicId,@RequestBody BookingStatusUpdateDTO statusUpdate) {
+    // Update job status using PATCH
+    @PatchMapping("/{bookingId}")
+    public ResponseEntity<?> updateJobStatus(@PathVariable Long bookingId, @RequestBody BookingStatusUpdateDTO statusUpdate) {
         try {
-            if (statusUpdate.getStatus() == null || statusUpdate.getStatus().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Error: Status cannot be empty");
-            }
-
-            Booking updatedBooking = bookingService.updateJobStatus(bookingId, mechanicId, statusUpdate.getStatus());
+            Booking updatedBooking = bookingService.updateJobStatus(bookingId, statusUpdate);
             return ResponseEntity.ok(updatedBooking);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
+    
+    //Separate route for marking job as COMPLETED (Requires customerPhoneNo)
+    @PatchMapping("/{bookingId}/complete")
+    public ResponseEntity<?> completeJob(@PathVariable Long bookingId, @RequestBody BookingStatusUpdateDTO statusUpdate) {
+        try {
+            Booking completedBooking = bookingService.completeJob(bookingId, statusUpdate);
+            return ResponseEntity.ok(completedBooking);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        }
+    }
+    
 }
+

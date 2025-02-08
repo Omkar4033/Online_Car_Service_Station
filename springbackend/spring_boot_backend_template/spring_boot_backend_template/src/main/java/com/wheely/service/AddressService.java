@@ -28,32 +28,17 @@ public class AddressService {
   //  @Autowired
  //   private BookingRepository bookingRepository;
 
-    
     public Address saveAddress(Long userId, Address address) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
 
-        Address managedAddress;
-        
-        if (address.getAddressId() != null) { // Check if address already exists
-            managedAddress = addressRepository.findById(address.getAddressId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Address with ID " + address.getAddressId() + " not found"));
-            
-            // Update the existing address details
-            managedAddress.setMobile(address.getMobile());
-            managedAddress.setLandMark(address.getLandMark());
-            managedAddress.setCity(address.getCity());
-            managedAddress.setPinCode(address.getPinCode());
-            managedAddress.setState(address.getState());
-            managedAddress.setCountry(address.getCountry());
-        } else {
-            // New Address
-            managedAddress = address;
-        }
+        address.setUser(user);
 
-        managedAddress.setUser(user); // Ensure user is correctly associated
-        return addressRepository.save(managedAddress);
+
+        return addressRepository.save(address);
     }
+
+
 
  // Get all addresses by user ID
     public List<Address> getAddressesByUserId(Long userId) {

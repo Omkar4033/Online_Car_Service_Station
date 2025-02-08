@@ -14,7 +14,7 @@ import PageNotFound from "../pages/PageNotFound";
 // Customer Panel
 import CustomerDashboard from "../pages/Dashboard/CustomerPanel/CustomerDashboard";
 import CartPage from "../pages/Dashboard/CustomerPanel/CartPage";
-import ContactInfo from "../pages/Dashboard/CustomerPanel/ContactInfo";
+import Address from "../pages/Dashboard/CustomerPanel/Address";
 import PaymentPage from "../pages/Dashboard/CustomerPanel/PaymentPage";
 import MyCars from "../pages/Dashboard/CustomerPanel/MyCars";
 import UserSettings from "../pages/Dashboard/CustomerPanel/Settings";
@@ -40,7 +40,9 @@ import MechanicPendingJobs from "../pages/Dashboard/MechanicPanel/MechanicPendin
 import MechanicFeedback from "../pages/Dashboard/MechanicPanel/MechanicFeedback";
 import MechanicJobHistory from "../pages/Dashboard/MechanicPanel/MechanicJobHistory";
 import MechanicAcceptedJobs from "../pages/Dashboard/MechanicPanel/MechanicAcceptedJobs";
-import MechanicUpdateJobStatus from "../pages/Dashboard/MechanicPanel/MechanicUpdateJobStatus";
+import MechanicCompleteJob from "../pages/Dashboard/MechanicPanel/MechanicCompleteJob"; 
+
+
 
 const AppRoutes = () => (
   <Routes>
@@ -60,7 +62,7 @@ const AppRoutes = () => (
     <Route path="/user/my-cars" element={<MyCars />} />
     <Route path="/user/settings" element={<UserSettings />} />
     <Route path="/user/bookings" element={<CustomerBookings />} />
-    <Route path="/user/contact-info" element={<ContactInfo />} />
+    <Route path="/user/address" element={<Address />} />
     <Route path="/user/confirmation" element={<OrderConfirmationPage />} />
     <Route path="/user/select-car" element={<SelectCar />} />
     <Route path="/user/booking/:bookingId" element={<BookingDetails />} />
@@ -80,9 +82,10 @@ const AppRoutes = () => (
     <Route path="/mechanic/dashboard" element={<MechanicDashboard />} />
     <Route path="/mechanic/pending-jobs" element={<MechanicPendingJobs />} />
     <Route path="/mechanic/job-history" element={<MechanicJobHistory />} />
-    <Route path="/mechanic/update-job-status" element={<MechanicUpdateJobStatus />}/>
     <Route path="/mechanic/accepted-jobs" element={<MechanicAcceptedJobs />} />
     <Route path="/mechanic/feedback" element={<MechanicFeedback />} />
+    <Route path="/mechanic/complete-job/:bookingId" element={<MechanicCompleteJob />} />
+    <Route path="/mechanic/complete-job" element={<MechanicCompleteJob />} />
 
     {/* Catch-all for 404 */}
     <Route path="*" element={<PageNotFound />} />

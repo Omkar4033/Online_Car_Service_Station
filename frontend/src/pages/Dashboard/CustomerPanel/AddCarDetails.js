@@ -13,6 +13,8 @@ const AddCarDetails = ({ setIsAddingCar }) => {
     userId: user?.userId || ""
   });
 
+  
+
   const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "CNG"]; 
 
   const handleInputChange = (e) => {

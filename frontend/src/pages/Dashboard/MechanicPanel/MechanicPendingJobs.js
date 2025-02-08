@@ -12,10 +12,12 @@ const MechanicPendingJobs = () => {
   const [jobsPerPage] = useState(3);
   const [pendingJobs, setPendingJobs] = useState([]);
   const [error, setError] = useState(null);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchPendingJobs = async () => {
       try {
+        setLoading(true);
         const response = await fetch("http://localhost:8080/api/bookings/pending");
         if (!response.ok) {
           throw new Error("Failed to fetch pending jobs");
@@ -29,34 +31,31 @@ const MechanicPendingJobs = () => {
       }
     };
     fetchPendingJobs();
-  }, []);
+  }, [reload]);
 
-  const updateJobStatus = async (bookingId) => {
+  const updateJobStatus = async (bookingId, customerPhoneNo) => {
     try {
-      console.log(bookingId);
-      const response = await fetch(
-        `http://localhost:8080/api/bookings/${bookingId}/${mechanic.userId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: "ACCEPTED" }), // Only updating to IN_PROCESS
-        }
-      );
+      const response = await fetch(`http://localhost:8080/api/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: "ACCEPTED",
+          mechanicId: mechanic.userId, // Mechanic ID from DTO
+          customerPhoneNo: customerPhoneNo, // Customer Phone No from DTO
+        }),
+      });
+
       if (!response.ok) {
         throw new Error("Failed to update job status");
       }
-      setPendingJobs((prevJobs) =>
-        prevJobs.map((job) =>
-          job.bookingId === bookingId ? { ...job, bookingStatus: "IN_PROCESS" } : job
-        )
-      );
+
+      setReload((prev) => !prev);
     } catch (error) {
       console.error("Error updating job status:", error);
     }
   };
-  console.log(pendingJobs);
 
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
@@ -85,6 +84,7 @@ const MechanicPendingJobs = () => {
                   <tr className={`${darkMode ? "bg-gray-700" : "bg-gray-200"} text-sm font-semibold`}>
                     <th className="p-3">Booking ID</th>
                     <th className="p-3">Customer Name</th>
+                    <th className="p-3">Phone No</th>
                     <th className="p-3">Car Details</th>
                     <th className="p-3">Booking Date</th>
                     <th className="p-3">Status</th>
@@ -108,6 +108,7 @@ const MechanicPendingJobs = () => {
                     >
                       <td className="p-3">{job.bookingId}</td>
                       <td className="p-3">{job.user.name}</td>
+                      <td className="p-3">{job.user.phoneNo}</td>
                       <td className="p-3">
                         {job.car.company} {job.car.model} ({job.car.fuelType})
                       </td>
@@ -116,14 +117,14 @@ const MechanicPendingJobs = () => {
                       <td className="p-3">${job.totalAmount.toFixed(2)}</td>
                       <td className="p-3">
                         <button
-                          onClick={() => updateJobStatus(job.bookingId)}
+                          onClick={() => updateJobStatus(job.bookingId, job.user.phoneNo)}
                           className={`p-2 rounded-lg shadow-md transition focus:outline-none ${
                             darkMode
-                              ? "bg-blue-600 text-gray-300 hover:bg-gray-700"
+                              ? "bg-blue-500 text-gray-300 hover:bg-gray-700"
                               : "bg-white text-gray-800 hover:bg-gray-200"
                           }`}
                         >
-                          Accept 
+                          Accept
                         </button>
                       </td>
                     </tr>

@@ -15,10 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
-    private Long addressId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "address_id")
+	private Long addressId;
 
     @Column(name = "mobile", nullable = false, length = 15)
     private String mobile;

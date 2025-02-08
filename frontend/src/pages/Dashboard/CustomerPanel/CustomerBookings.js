@@ -6,14 +6,17 @@ import axios from "axios";
 
 const CustomerBookings = () => {
   const darkMode = useSelector((state) => state.darkMode.isDarkMode);
+  const user=useSelector((state) => state.userData?.user);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(user.userId);
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const userId = 1; // Replace with actual user ID from authentication
+        const userId = user?.userId;
         const response = await axios.get(
           `http://localhost:8080/api/bookings/user/${userId}`
         );

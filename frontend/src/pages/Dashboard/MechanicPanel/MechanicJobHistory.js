@@ -74,7 +74,6 @@ const MechanicJobHistory = () => {
                     <th className="p-3">Customer Name</th>
                     <th className="p-3">Car Details</th>
                     <th className="p-3">Booking Date</th>
-                    <th className="p-3">Status</th>
                     <th className="p-3">Total Amount</th>
                   </tr>
                 </thead>
@@ -100,7 +99,6 @@ const MechanicJobHistory = () => {
                       <td className="p-3">
                         {new Date(job.bookingDate).toLocaleDateString("en-US")}
                       </td>
-                      <td className="p-3">{job.bookingStatus}</td>
                       <td className="p-3">${job.totalAmount.toFixed(2)}</td>
                     </tr>
                   ))}

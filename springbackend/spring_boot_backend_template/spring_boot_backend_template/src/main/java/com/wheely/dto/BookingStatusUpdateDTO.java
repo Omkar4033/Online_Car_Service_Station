@@ -9,4 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookingStatusUpdateDTO {
     private String status;
+    private Long mechanicId;
+    private String customerPhoneNo;
+	
 }
