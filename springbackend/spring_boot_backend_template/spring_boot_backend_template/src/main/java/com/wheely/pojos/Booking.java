@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Date;
 
@@ -41,13 +42,13 @@ public class Booking {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "booking_services", 
         joinColumns = @JoinColumn(name = "booking_id"), 
         inverseJoinColumns = @JoinColumn(name = "service_id")
     )
-    @JsonIgnore
+    @JsonManagedReference
     private Set<Service> services = new HashSet<>();
 
     @ManyToOne

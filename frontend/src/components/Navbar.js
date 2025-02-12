@@ -57,16 +57,7 @@ const Navbar = () => {
               Services
             </Link>
           </li>
-          {userRole === "CUSTOMER" && (
-            <li>
-              <Link
-                to="/dashboard/customer"
-                className={`hover:text-black dark:hover:text-gray-200 transition duration-200 ease-in-out transform hover:scale-110 hover:brightness-110 ${location.pathname === "/dashboard/customer" ? "border-b-2 border-solid border-blue-400 font-semibold" : ""}`}
-              >
-                Dashboard
-              </Link>
-            </li>
-          )}
+          
           {userRole === "ADMIN" && (
             <li>
               <Link

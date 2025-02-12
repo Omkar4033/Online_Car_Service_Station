@@ -67,8 +67,6 @@ const AdminAllMechanics = () => {
                 <th className="p-3">Email</th>
                 <th className="p-3">PhoneNo</th>
                 <th className="p-3">Address</th>
-                <th className="p-3">Status</th>
-                <th className="p-3">Actions</th>
               </tr>
             </thead>
             {loading ? (
@@ -82,21 +80,7 @@ const AdminAllMechanics = () => {
                     <td className="p-3">{mechanic.email}</td>
                     <td className="p-3">{mechanic.phoneNo}</td>
                     <td className="p-3">{mechanic.address}</td>
-                    <td className="p-3">{mechanic.status}</td>
-                    <td className="p-3 space-x-2">
-                      <button
-                        onClick={() => handleEditMechanic(mechanic.id)}
-                        className={`px-2 py-1 rounded-xl shadow-lg transition-all duration-300 ${darkMode ? "bg-blue-500 text-white hover:bg-blue-400 hover:scale-105" : "bg-blue-400 text-white hover:bg-blue-300 hover:scale-105"}`}
-                      >
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      <button
-                        onClick={() => handleDeleteMechanic(mechanic.id)}
-                        className={`px-2 py-1 rounded-full transition-all duration-300 ${darkMode ? "bg-red-600 text-white hover:bg-red-500 hover:scale-105" : "bg-red-500 text-white hover:bg-red-400 hover:scale-105"}`}
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </td>
+                   
                   </tr>
                 ))}
               </tbody>

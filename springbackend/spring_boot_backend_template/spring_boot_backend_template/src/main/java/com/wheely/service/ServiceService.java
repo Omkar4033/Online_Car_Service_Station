@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wheely.dao.CategoryRepository;
 import com.wheely.dao.ServiceRepository;
+import com.wheely.dto.ServiceDTO;
 import com.wheely.pojos.Category;
 
 import java.util.List;
@@ -25,50 +26,59 @@ public class ServiceService {
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
-    
 
     // Create a new service
     public com.wheely.pojos.Service createService(com.wheely.pojos.Service service) {
         return serviceRepository.save(service);
     }
 
-    // Get all services (optionally filtered by category)
+    // Get all active services
+    @Transactional
     public List<com.wheely.pojos.Service> getAllServices() {
-        return serviceRepository.findAll();
+        return serviceRepository.findByIsActiveTrue(); // Fetch only active services
     }
 
-    // Get all services by category
+    // Get all active services by category
     public List<com.wheely.pojos.Service> getServicesByCategory(Long categoryId) {
-        return serviceRepository.findByCategory_CategoryId(categoryId);
+        return serviceRepository.findByCategory_CategoryIdAndIsActiveTrue(categoryId);
     }
 
-    // Get a single service by ID
+    // Get a single active service by ID
     public com.wheely.pojos.Service getServiceById(Long id) {
-        return serviceRepository.findById(id).orElse(null);
+        Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(id);
+        return optionalService.filter(com.wheely.pojos.Service::isActive).orElse(null);
     }
 
     // Update an existing service
-    public com.wheely.pojos.Service updateService(Long id, com.wheely.pojos.Service service) {
+    public com.wheely.pojos.Service updateService(Long id, ServiceDTO serviceDto) {
         Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(id);
         if (optionalService.isPresent()) {
             com.wheely.pojos.Service entity = optionalService.get();
-            entity.setName(service.getName());
-            entity.setDescription(service.getDescription());
-            entity.setPrice(service.getPrice());
-            entity.setCategory(service.getCategory());
+            if (!entity.isActive()) {
+                return null; // Don't update inactive services
+            }
+            entity.setName(serviceDto.getName());
+            entity.setDescription(serviceDto.getDescription());
+            entity.setPrice(serviceDto.getPrice());
+
+            Optional<Category> category = categoryRepository.findById(serviceDto.getCategoryId());
+            category.ifPresent(entity::setCategory);
+
             serviceRepository.save(entity);
             return entity;
         }
-        return null ;
+        return null;
     }
 
-    // Delete a service
-    public boolean deleteService(Long id) {
-        if (serviceRepository.existsById(id)) {
-            serviceRepository.deleteById(id);
+    // Soft delete a service
+    public boolean softDeleteService(Long serviceId) {
+        Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(serviceId);
+        if (optionalService.isPresent()) {
+            com.wheely.pojos.Service service = optionalService.get();
+            service.setActive(false); // Mark as inactive
+            serviceRepository.save(service);
             return true;
         }
         return false;
     }
-
 }

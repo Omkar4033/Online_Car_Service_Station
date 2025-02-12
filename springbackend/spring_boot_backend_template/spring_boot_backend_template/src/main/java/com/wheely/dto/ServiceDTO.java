@@ -15,6 +15,7 @@ public class ServiceDTO {
     private String description;
     private Double price;
     private Long categoryId;
+    private boolean isActive;
     
     
 }

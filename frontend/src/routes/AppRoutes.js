@@ -33,6 +33,7 @@ import FeedbackResponse from "../pages/Dashboard/AdminPanel/AdminFeedback";
 import AdminAllUsers from "../pages/Dashboard/AdminPanel/AdminAllUsers";
 import AdminAllMechanics from "../pages/Dashboard/AdminPanel/AdminAllMechanics";
 import AdminAllCars from "../pages/Dashboard/AdminPanel/AdminAllCars";
+import AdminUpdateService from "../pages/Dashboard/AdminPanel/AdminUpdateService";
 
 // Mechanic Panel
 import MechanicDashboard from "../pages/Dashboard/MechanicPanel/MechanicDashboard";
@@ -77,6 +78,7 @@ const AppRoutes = () => (
     <Route path="/admin/add-service" element={<AddService />} />
     <Route path="/admin/view-report" element={<ViewReport />} />
     <Route path="/admin/feedback-response" element={<FeedbackResponse />} />
+    <Route path="/admin/all-services/update/:id" element={<AdminUpdateService />} />
 
     {/* mechanic Routes */}
     <Route path="/mechanic/dashboard" element={<MechanicDashboard />} />

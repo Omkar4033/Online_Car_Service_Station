@@ -15,7 +15,10 @@ import com.wheely.pojos.Category;
 import com.wheely.pojos.User;
 import com.wheely.pojos.UserRole;
 
+import jakarta.transaction.Transactional;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -72,4 +75,8 @@ public class AdminService {
 		}
 
 	}
+	
+	
+	
+	
 }

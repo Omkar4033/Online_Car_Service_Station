@@ -21,6 +21,7 @@ const AdminAllUsers = () => {
         }
         const data = await response.json();
         setUsers(data);
+        console.log(JSON.stringify(data[0]));
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
@@ -76,8 +77,6 @@ const AdminAllUsers = () => {
                 <th className="p-3">Email</th>
                 <th className="p-3">Phone</th>
                 <th className="p-3">Address</th>
-                <th className="p-3">Status</th>
-                <th className="p-3">Actions</th>
               </tr>
             </thead>
             {loading ? (
@@ -102,30 +101,8 @@ const AdminAllUsers = () => {
                     <td className="p-3">{user.name}</td>
                     <td className="p-3">{user.email}</td>
                     <td className="p-3">{user.phoneNo}</td>
-                    <td className="p-3">{user.address}</td>
-                    <td className="p-3">{user.status}</td>
-                    <td className="p-3 space-x-2">
-                      <button
-                        onClick={() => handleEditUser(user.id)}
-                        className={`px-2 py-1 rounded-xl shadow-lg transition-all duration-300 ${
-                          darkMode
-                            ? "bg-blue-500 text-white hover:bg-blue-400 hover:scale-105"
-                            : "bg-blue-400 text-white hover:bg-blue-300 hover:scale-105"
-                        }`}
-                      >
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      <button
-                        onClick={() => handleDeleteUser(user.id)}
-                        className={`px-2 py-1 rounded-full transition-all duration-300 ${
-                          darkMode
-                            ? "bg-red-600 text-white hover:bg-red-500 hover:scale-105"
-                            : "bg-red-500 text-white hover:bg-red-400 hover:scale-105"
-                        }`}
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </td>
+                    <td className="p-3">{user.Address}</td>
+                    
                   </tr>
                 ))}
               </tbody>

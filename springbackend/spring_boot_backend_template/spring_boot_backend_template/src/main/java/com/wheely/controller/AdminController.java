@@ -11,8 +11,10 @@ import com.wheely.pojos.Car;
 import com.wheely.pojos.Service;
 import com.wheely.pojos.User;
 import com.wheely.service.AdminService;
+import com.wheely.service.ServiceService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -21,6 +23,9 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private ServiceService serviceService;
 
 	// Get all users
 	@GetMapping("/users")
@@ -74,5 +79,33 @@ public class AdminController {
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 	}
+	
+	// Update an existing service
+	@PutMapping("/services/update/{serviceId}")
+	public ResponseEntity<Service> updateService(@PathVariable Long serviceId, @RequestBody ServiceDTO serviceDto) {
+	    Optional<Service> existingService = Optional.ofNullable(serviceService.getServiceById(serviceId));
+	    
+	    if (existingService.isPresent()) {
+	        Service updatedService = serviceService.updateService(serviceId, serviceDto);
+	        return ResponseEntity.ok(updatedService);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 if service not found
+	    }
+	}
+
+	// Soft delete a service (mark as inactive)
+	@DeleteMapping("/services/delete/{serviceId}")
+	public ResponseEntity<String> softDeleteService(@PathVariable Long serviceId) {
+	    boolean isDeleted = serviceService.softDeleteService(serviceId);
+	    
+	    if (isDeleted) {
+	        return ResponseEntity.ok("Service has been marked as inactive.");
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found.");
+	    }
+	}
+
+	
+	
 
 }

@@ -19,7 +19,9 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
-
+    
+    
+    //create  a booking
     @PostMapping("/save")
     public ResponseEntity<?> saveBooking(@RequestBody BookingRequestDTO bookingRequest) {
         try {
@@ -31,7 +33,7 @@ public class BookingController {
         }
     }
 
-    // ✅ Get all bookings for a specific user
+    //  Get all bookings for a specific user
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getBookingsByUser(@PathVariable Long userId) {
         try {
@@ -42,8 +44,8 @@ public class BookingController {
                     .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
-
-    // ✅ Get booking details by bookingId
+    
+    //  Get booking details by bookingId
     @GetMapping("/{bookingId}")
     public ResponseEntity<?> getBookingById(@PathVariable Long bookingId) {
         try {
@@ -59,7 +61,7 @@ public class BookingController {
         }
     }
 
-    // ✅ Get all bookings with pending status
+    //  Get all bookings with pending status
     @GetMapping("/pending")
     public ResponseEntity<?> getPendingBookings() {
         try {
@@ -72,7 +74,7 @@ public class BookingController {
     }
     
     
-
+    // Get all the bookings for the specific mechanic
     @GetMapping("/mechanic/{mechanicId}")
     public ResponseEntity<?> getBookingsByMechanic(
             @PathVariable Long mechanicId,

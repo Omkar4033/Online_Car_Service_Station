@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "./AdminSidebar";
 import Loader from "../../../components/Loader";
 import Pagination from "../../../components/Pagination"; // Import the pagination component
@@ -10,6 +11,7 @@ const AdminAllService = () => {
   const [services, setServices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const servicesPerPage = 8; // Number of items per page
+  const navigate = useNavigate();
 
   // Fetch services from backend
   useEffect(() => {
@@ -21,7 +23,6 @@ const AdminAllService = () => {
         }
         const data = await response.json();
         setServices(data);
-        console.log(services);
       } catch (error) {
         console.error("Error fetching services:", error);
       } finally {
@@ -32,22 +33,19 @@ const AdminAllService = () => {
     fetchServices();
   }, []);
 
-  const handleEditService = async (id) => {
-    const updatedServices = services.map((service) =>
-      service.id === id ? { ...service, name: "Updated Service", price: "$120" } : service
-    );
-    setServices(updatedServices);
+  const handleEditService = (id) => {
+    navigate(`/admin/all-services/update/${id}`);
   };
 
   const handleDeleteService = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/services/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/admin/services/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
         throw new Error("Failed to delete service");
       }
-      setServices(services.filter((service) => service.id !== id));
+      setServices(services.filter((service) => service.serviceId !== id));
     } catch (error) {
       console.error("Error deleting service:", error);
     }
@@ -91,10 +89,10 @@ const AdminAllService = () => {
                     <td className="p-3">₹{service.price}</td>
                     <td className="p-3">{service.category.name}</td>
                     <td className="p-3 space-x-2">
-                      <button onClick={() => handleEditService(service.id)} className={`px-2 py-1 rounded-xl shadow-lg transition-all duration-300 ${darkMode ? "bg-blue-500 text-white" : "bg-blue-400 text-white"}`}>
+                      <button onClick={() => handleEditService(service.serviceId)} className={`px-2 py-1 rounded-xl shadow-lg transition-all duration-300 ${darkMode ? "bg-blue-500 text-white" : "bg-blue-400 text-white"}`}>
                         <i className="fas fa-edit"></i>
                       </button>
-                      <button onClick={() => handleDeleteService(service.id)} className={`px-2 py-1 rounded-full transition-all duration-300 ${darkMode ? "bg-red-600 text-white" : "bg-red-500 text-white"}`}>
+                      <button onClick={() => handleDeleteService(service.serviceId)} className={`px-2 py-1 rounded-full transition-all duration-300 ${darkMode ? "bg-red-600 text-white" : "bg-red-500 text-white"}`}>
                         <i className="fas fa-trash"></i>
                       </button>
                     </td>

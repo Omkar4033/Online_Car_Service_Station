@@ -3,6 +3,7 @@ package com.wheely.pojos;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -29,13 +30,16 @@ public class Service {
 
     @Column(name = "Price", nullable = false)
     private Double price;
+    
+    @Column(name="isActive")
+    private boolean isActive = true;
 
     @ManyToOne
     @JoinColumn(name = "Category_ID", nullable = false)
     private Category category;
 
     @ManyToMany(mappedBy = "services")
-    @JsonIgnore
+    @JsonBackReference
     private Set<Booking> bookings = new HashSet<>(); // Set to avoid duplicate entries
 
     

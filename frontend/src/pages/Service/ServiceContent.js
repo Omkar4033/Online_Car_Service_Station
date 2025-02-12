@@ -1,15 +1,15 @@
 // ServiceContent.js
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"; // Use useSelector to access the Redux state
+import { useDispatch, useSelector } from "react-redux"; 
 import { addToCart } from "../../redux/actions/cartActions";
 import { fetchCategories, fetchServicesByCategory } from "../../services API/serviceAPI";
 import Loader from "../../components/Loader";
 import { ToastContainer, toast, Zoom } from "react-toastify";
-import ServiceCard from "./ServiceCard"; // Import the new ServiceCard component
+import ServiceCard from "./ServiceCard"; 
 
 const ServiceContent = ({ darkMode }) => {
   const [categories, setCategories] = useState([]);
-  const [services, setServices] = useState([]); // Changed from Map to simple array
+  const [services, setServices] = useState([]); 
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 

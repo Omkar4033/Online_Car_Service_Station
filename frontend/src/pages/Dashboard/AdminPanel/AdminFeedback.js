@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Sidebar from "./AdminSidebar"; // Adjust the import path as needed
+import Sidebar from "./AdminSidebar";
 import Loader from "../../../components/Loader";
 
 const AdminFeedback = () => {
@@ -9,19 +9,21 @@ const AdminFeedback = () => {
   const [feedback, setFeedback] = useState([]);
 
   useEffect(() => {
-    // Simulate data fetch for feedback
-    const fetchData = () => {
-      setTimeout(() => {
-        setFeedback([
-          { id: 1, user: "John Doe", comment: "Great service!", rating: 5 },
-          { id: 2, user: "Jane Smith", comment: "Satisfactory experience.", rating: 4 },
-          { id: 3, user: "Mike Johnson", comment: "Could be better.", rating: 3 },
-        ]);
+    const fetchFeedback = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/feedback/all"); // Replace with your actual backend endpoint
+        if (!response.ok) throw new Error("Failed to fetch feedback");
+        
+        const data = await response.json();
+        setFeedback(data);
+      } catch (error) {
+        console.error("Error fetching feedback:", error);
+      } finally {
         setLoading(false);
-      }, 1000);
+      }
     };
 
-    fetchData();
+    fetchFeedback();
   }, []);
 
   const handleResponse = (id) => {
@@ -53,10 +55,9 @@ const AdminFeedback = () => {
                     darkMode ? "bg-gray-700" : "bg-gray-200"
                   } text-sm font-semibold`}
                 >
-                  <th className="p-3">User</th>
+                  <th className="p-3">Booking Id</th>
                   <th className="p-3">Comment</th>
-                  <th className="p-3">Rating</th>
-                  <th className="p-3">Actions</th>
+                  <th className="p-3">Rating</th>  
                 </tr>
               </thead>
               <tbody>
@@ -73,21 +74,10 @@ const AdminFeedback = () => {
                         : "bg-gray-100"
                     }`}
                   >
-                    <td className="p-3">{fb.user}</td>
+                    <td className="p-3">{fb.bookingId}</td>
                     <td className="p-3">{fb.comment}</td>
                     <td className="p-3">{fb.rating}</td>
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => handleResponse(fb.id)}
-                        className={`px-4 py-2 rounded-lg font-medium ${
-                          darkMode
-                            ? "bg-yellow-400 text-gray-900 hover:bg-yellow-500"
-                            : "bg-yellow-300 text-gray-800 hover:bg-yellow-400"
-                        } transition duration-300`}
-                      >
-                        Respond
-                      </button>
-                    </td>
+                   
                   </tr>
                 ))}
               </tbody>

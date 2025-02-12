@@ -21,7 +21,6 @@ const MechanicDashboard = () => {
 
     const fetchJobs = async () => {
       try {
-        console.log(`http://localhost:8080/api/bookings/mechanic/${mechanic.userId}`)
         const response = await fetch(`http://localhost:8080/api/bookings/mechanic/${mechanic.userId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch mechanic's jobs.");
@@ -69,7 +68,7 @@ const MechanicDashboard = () => {
           </div>
           <div className={`p-6 rounded-lg shadow-md ${darkMode ? "bg-gray-800" : "bg-white"}`}>
             <h2 className="text-lg font-semibold">Pending Jobs</h2>
-            <p className="text-2xl font-bold">{jobs.filter(job => job.bookingStatus !== "PENDING").length}</p>
+            <p className="text-2xl font-bold">{jobs.filter(job => job.bookingStatus === "PENDING").length }</p>
           </div>
           <div className={`p-6 rounded-lg shadow-md ${darkMode ? "bg-gray-800" : "bg-white"}`}>
             <h2 className="text-lg font-semibold">Total Amount</h2>

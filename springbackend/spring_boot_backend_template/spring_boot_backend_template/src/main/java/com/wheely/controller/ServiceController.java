@@ -64,31 +64,5 @@ public class ServiceController {
         }
     }
 
-    // Update an existing service
-    @PutMapping("/{id}")
-    public ResponseEntity<Service> updateService(@PathVariable Long id, @RequestBody Service service) {
-        try {
-            Service updatedService = serviceService.updateService(id, service);
-            if (updatedService == null) {
-                return ResponseEntity.status(404).body(null);
-            }
-            return ResponseEntity.ok(updatedService);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    // Delete a service
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteService(@PathVariable Long id) {
-        try {
-            boolean deleted = serviceService.deleteService(id);
-            if (!deleted) {
-                return ResponseEntity.status(404).body("Service not found");
-            }
-            return ResponseEntity.ok("Service deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Database error: " + e.getMessage());
-        }
-    }
+    
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ProgressBar = ({ currentStep, darkMode }) => {
-  const steps = [ "cart","select-car", "contact-info", "payment", "confirmation"];
+  const steps = [ "cart","select-car", "address", "payment", "confirmation"];
   const currentIndex = steps.indexOf(currentStep);
 
   return (
