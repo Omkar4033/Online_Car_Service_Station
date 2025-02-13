@@ -93,15 +93,15 @@ public class AdminController {
 	    }
 	}
 
-	// Soft delete a service (mark as inactive)
+	// Soft delete a service (mark it as  inactive)
 	@DeleteMapping("/services/delete/{serviceId}")
 	public ResponseEntity<String> softDeleteService(@PathVariable Long serviceId) {
 	    boolean isDeleted = serviceService.softDeleteService(serviceId);
 	    
 	    if (isDeleted) {
-	        return ResponseEntity.ok("Service has been marked as inactive.");
+	        return ResponseEntity.ok("Service is  inactive.");
 	    } else {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found.");
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found.!");
 	    }
 	}
 

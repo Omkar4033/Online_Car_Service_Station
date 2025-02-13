@@ -21,29 +21,29 @@ public class ServiceService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    // Get all categories
+    //To  Get all categories
     @Transactional
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-    // Create a new service
+    //To  Create a new service
     public com.wheely.pojos.Service createService(com.wheely.pojos.Service service) {
         return serviceRepository.save(service);
     }
 
-    // Get all active services
+    // To Get all active services
     @Transactional
     public List<com.wheely.pojos.Service> getAllServices() {
-        return serviceRepository.findByIsActiveTrue(); // Fetch only active services
+        return serviceRepository.findByIsActiveTrue(); 
     }
 
-    // Get all active services by category
+    // To all active services by category
     public List<com.wheely.pojos.Service> getServicesByCategory(Long categoryId) {
         return serviceRepository.findByCategory_CategoryIdAndIsActiveTrue(categoryId);
     }
 
-    // Get a single active service by ID
+    // To Get a single active service by ID
     public com.wheely.pojos.Service getServiceById(Long id) {
         Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(id);
         return optionalService.filter(com.wheely.pojos.Service::isActive).orElse(null);
@@ -55,7 +55,7 @@ public class ServiceService {
         if (optionalService.isPresent()) {
             com.wheely.pojos.Service entity = optionalService.get();
             if (!entity.isActive()) {
-                return null; // Don't update inactive services
+                return null; 
             }
             entity.setName(serviceDto.getName());
             entity.setDescription(serviceDto.getDescription());
@@ -75,7 +75,7 @@ public class ServiceService {
         Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(serviceId);
         if (optionalService.isPresent()) {
             com.wheely.pojos.Service service = optionalService.get();
-            service.setActive(false); // Mark as inactive
+            service.setActive(false); 
             serviceRepository.save(service);
             return true;
         }
