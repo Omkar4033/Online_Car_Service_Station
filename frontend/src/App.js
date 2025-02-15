@@ -12,12 +12,7 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    // Redirect to login page if user is not logged in and is not on /login or /register page
-    if (!user && !['/login', '/register'].includes(location.pathname)) {
-      navigate("/login");
-    }
-  }, [user, navigate, location.pathname]);
+ 
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen">
