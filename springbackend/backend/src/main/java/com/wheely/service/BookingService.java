@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.wheely.dao.*;
 import com.wheely.dto.*;
-import com.wheely.exception.ResourceNotFoundException;
+import com.wheely.exception.GlobalException;
 import com.wheely.pojos.*;
 import jakarta.transaction.Transactional;
 
@@ -51,25 +51,25 @@ public class BookingService {
 			throw new IllegalArgumentException("Address ID must not be null");
 		}
 
-		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-		Car car = carRepository.findById(dto.getCarId()).orElseThrow(() -> new RuntimeException("Car not found"));
+		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new GolbalException("User not found"));
+		Car car = carRepository.findById(dto.getCarId()).orElseThrow(() -> new GolbalException("Car not found"));
 		Address address = addressRepository.findById(dto.getAddressId())
-				.orElseThrow(() -> new RuntimeException("Address not found"));
+				.orElseThrow(() -> new GolbalException("Address not found"));
 
 		User mechanic = null;
 		if (dto.getMechanicId() != null) {
 			mechanic = userRepository.findById(dto.getMechanicId())
-					.orElseThrow(() -> new RuntimeException("Mechanic not found"));
+					.orElseThrow(() -> new GolbalException("Mechanic not found"));
 
 			if (!"MECHANIC".equals(mechanic.getRole())) {
-				throw new RuntimeException("Selected user is not a mechanic");
+				throw new GolbalException("Selected user is not a mechanic");
 			}
 		}
 
 		Set<com.wheely.pojos.Service> selectedServices = new HashSet<>(
 				serviceRepository.findAllById(dto.getServiceIds()));
 		if (selectedServices.isEmpty()) {
-			throw new RuntimeException("No valid services found for provided IDs");
+			throw new GolbalException("No valid services found for provided IDs");
 		}
 
 		Booking booking = new Booking();

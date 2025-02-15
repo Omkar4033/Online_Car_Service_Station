@@ -5,6 +5,7 @@ import com.wheely.dao.UserRepository;
 import com.wheely.dto.CarDTO;
 import com.wheely.pojos.Car;
 import com.wheely.pojos.User;
+import com.wheely.exception.GolbalException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CarService {
     // Add car
     public Car addCar(CarDTO carDto) {
         User user = userRepository.findById(carDto.getUserId())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new GolbalException("User not found"));
 
         Car car = new Car(carDto.getCompany(), carDto.getModel(), carDto.getFuelType(), carDto.getRegistration(), user);
         return carRepository.save(car);
@@ -49,7 +50,7 @@ public class CarService {
     // Update car
     public Car updateCar(Long id, CarDTO carDto) {
         Car existingCar = carRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Car not found"));
+            .orElseThrow(() -> new GolbalException("Car not found"));
 
         existingCar.setCompany(carDto.getCompany());
         existingCar.setModel(carDto.getModel());
@@ -62,7 +63,7 @@ public class CarService {
     // Delete car
     public void deleteCar(Long id) {
         Car car = carRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Car not found"));
+            .orElseThrow(() -> new GolbalException("Car not found"));
         carRepository.delete(car);
     }
 }

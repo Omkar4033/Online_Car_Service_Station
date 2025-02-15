@@ -20,7 +20,7 @@ public class PaymentService {
         Stripe.apiKey = stripeSecretKey;
 
         Map<String, Object> params = new HashMap<>();
-        params.put("amount", paymentRequestDTO.getAmount() * 100); // Convert to paise
+        params.put("amount", paymentRequestDTO.getAmount() * 100); 
         params.put("currency", paymentRequestDTO.getCurrency());
         params.put("payment_method_types", java.util.Arrays.asList("card"));
 

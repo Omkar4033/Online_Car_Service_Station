@@ -16,7 +16,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    // Get all categories
+    // Geting  all categories
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
@@ -24,7 +24,7 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    // Get a category by ID
+    // Geting  a category by ID
     public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id).orElse(null);
         return category != null ? CategoryDTO.fromEntity(category) : null;
@@ -38,7 +38,7 @@ public class CategoryService {
         return CategoryDTO.fromEntity(category);
     }
 
-    // Update an existing category
+    // To  Update existing  category
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(id).orElse(null);
         if (category == null) {
@@ -49,7 +49,7 @@ public class CategoryService {
         return CategoryDTO.fromEntity(category);
     }
 
-    // Delete a category
+    //For  Deleting a category
     public boolean deleteCategory(Long id) {
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);

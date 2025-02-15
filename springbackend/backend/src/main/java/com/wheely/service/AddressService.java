@@ -25,8 +25,7 @@ public class AddressService {
     @Autowired
     private UserRepository userRepository;
 
-  //  @Autowired
- //   private BookingRepository bookingRepository;
+  
 
     public Address saveAddress(Long userId, Address address) {
         User user = userRepository.findById(userId)
@@ -40,7 +39,7 @@ public class AddressService {
 
 
 
- // Get all addresses by user ID
+ //  ToGet all addresses by user id 
     public List<Address> getAddressesByUserId(Long userId) {
         return addressRepository.findByUser_UserId(userId);
     }

@@ -14,6 +14,7 @@ import com.wheely.pojos.Car;
 import com.wheely.pojos.Category;
 import com.wheely.pojos.User;
 import com.wheely.pojos.UserRole;
+import com.wheely.exception.GlobalException
 
 import jakarta.transaction.Transactional;
 
@@ -38,25 +39,25 @@ public class AdminService {
 	@Autowired
 	private CarRepository carRepository;
 
-	// Get all users
+	// Getting  all users
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 
-	// Get all bookings
+	 // Getting all bookings
 	public List<Booking> getAllBookings() {
 		return bookingRepository.findAll();
 	}
 
-	// Get all services
+	// Getting all services
 	public List<com.wheely.pojos.Service> getAllServices() {
 		return serviceRepository.findAll();
 	}
 
-	// Add service
+	// Adding service
 	public com.wheely.pojos.Service addService(ServiceDTO serviceDto) {
 		Category category = categoryRepository.findById(serviceDto.getCategoryId())
-				.orElseThrow(() -> new RuntimeException("Category not found"));
+				.orElseThrow(() -> new GlobalException("Category not found"));
 
 		com.wheely.pojos.Service service = new com.wheely.pojos.Service(serviceDto.getName(), serviceDto.getDescription(),
 				serviceDto.getPrice(), category);
