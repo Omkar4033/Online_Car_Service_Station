@@ -5,8 +5,7 @@ The Online Car Service Station is a full-stack web application designed to provi
 The platform allows customers to select services, manage their vehicles, make payments, and track bookings. Admins can manage services, bookings, and user accounts through a dedicated admin panel.
 
 ##ScreenShots : -
-![WhatsApp Image 2025-02-11 at 11 16 55_3b310a96](https://github.com/user-attachments/assets/e04c82ec-c6bf-4d9d-b126-adddfd2e31ed)
-![WhatsApp Image 2025-02-11 at 11 16 56_138b761e](https://github.com/user-attachments/assets/82976b65-5366-4713-934d-ce8dfb7f2595)
+![WhatsApp Image 2025-02-11 at 11 16 55_3b310a96](https://github.com/user-attachments/assets/e04c82ec-c6bf-4d9d-b126-adddfd2e31ed) ![WhatsApp Image 2025-02-11 at 11 16 56_138b761e](https://github.com/user-attachments/assets/82976b65-5366-4713-934d-ce8dfb7f2595)
 ![WhatsApp Image 2025-02-11 at 11 16 57_2fec77c2](https://github.com/user-attachments/assets/bbb79259-1c22-4498-bd6d-bcc33757a185)
 ![WhatsApp Image 2025-02-11 at 11 16 59_dd0a175f](https://github.com/user-attachments/assets/e7e2eddf-cc65-4308-ad85-b428cea9da0e)
 
@@ -75,29 +74,7 @@ The platform allows customers to select services, manage their vehicles, make pa
    npm start
    ```
 
-## API Endpoints
-### Authentication:
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login and get JWT token
 
-### Services:
-- `GET /api/services` - Get all available services
-- `GET /api/admin/services/{id}` - Get a service by ID
-- `PUT /api/admin/services/update/{id}` - Update service details
 
-### Bookings:
-- `POST /api/bookings` - Create a new booking
-- `GET /api/bookings/{userId}` - Get bookings by user ID
 
-## Future Enhancements
-- Implement email notifications for bookings
-- Add real-time service tracking
-- Introduce discount coupons and offers
-
-## Contributors
-- **Your Name** - Developer
-- **Your Team Members (if any)**
-
-## License
-This project is licensed under the MIT License.
 
