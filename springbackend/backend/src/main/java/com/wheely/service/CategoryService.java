@@ -3,6 +3,7 @@ package com.wheely.service;
 import com.wheely.dao.CategoryRepository;
 import com.wheely.dto.CategoryDTO;
 import com.wheely.pojos.Category;
+import com.wheely.service.interfaces.CategoryServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CategoryService {
+public class CategoryService implements CategoryServiceInterface {
 
     @Autowired
     private CategoryRepository categoryRepository;
 
-    // Geting  all categories
+    @Override
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
@@ -24,13 +25,13 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    // Geting  a category by ID
+    @Override
     public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id).orElse(null);
         return category != null ? CategoryDTO.fromEntity(category) : null;
     }
 
-    // Create a new category
+    @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setName(categoryDTO.getName());
@@ -38,7 +39,7 @@ public class CategoryService {
         return CategoryDTO.fromEntity(category);
     }
 
-    // To  Update existing  category
+    @Override
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(id).orElse(null);
         if (category == null) {
@@ -49,7 +50,7 @@ public class CategoryService {
         return CategoryDTO.fromEntity(category);
     }
 
-    //For  Deleting a category
+    @Override
     public boolean deleteCategory(Long id) {
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);

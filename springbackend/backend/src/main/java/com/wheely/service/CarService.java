@@ -5,7 +5,8 @@ import com.wheely.dao.UserRepository;
 import com.wheely.dto.CarDTO;
 import com.wheely.pojos.Car;
 import com.wheely.pojos.User;
-import com.wheely.exception.GolbalException;
+import com.wheely.exception.GlobalException;
+import com.wheely.service.interfaces.CarServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CarService {
+public class CarService implements CarServiceInterface {
 
     @Autowired
     private CarRepository carRepository;
@@ -22,35 +23,34 @@ public class CarService {
     @Autowired
     private UserRepository userRepository;
 
-    // Add car
+    @Override
     public Car addCar(CarDTO carDto) {
         User user = userRepository.findById(carDto.getUserId())
-            .orElseThrow(() -> new GolbalException("User not found"));
+            .orElseThrow(() -> new GlobalException("User not found"));
 
         Car car = new Car(carDto.getCompany(), carDto.getModel(), carDto.getFuelType(), carDto.getRegistration(), user);
         return carRepository.save(car);
     }
 
-    // Get all cars
+    @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
 
-    // Get car by ID
+    @Override
     public Optional<Car> getCarById(Long id) {
         return carRepository.findById(id);
     }
     
-    //Get Car by user id
+    @Override
     public List<Car> getCarsByUserId(Long userId) {
-        // Assuming you have a method in your CarRepository to get cars by userId
         return carRepository.findByUser_UserId(userId);
     }
 
-    // Update car
+    @Override
     public Car updateCar(Long id, CarDTO carDto) {
         Car existingCar = carRepository.findById(id)
-            .orElseThrow(() -> new GolbalException("Car not found"));
+            .orElseThrow(() -> new GlobalException("Car not found"));
 
         existingCar.setCompany(carDto.getCompany());
         existingCar.setModel(carDto.getModel());
@@ -60,10 +60,10 @@ public class CarService {
         return carRepository.save(existingCar);
     }
 
-    // Delete car
+    @Override
     public void deleteCar(Long id) {
         Car car = carRepository.findById(id)
-            .orElseThrow(() -> new GolbalException("Car not found"));
+            .orElseThrow(() -> new GlobalException("Car not found"));
         carRepository.delete(car);
     }
 }

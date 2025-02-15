@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wheely.dto.ResponseMessageDTO;
+import com.wheely.service.interfaces.ForgetPasswordServiceInterface;
 
 @Service
-public class ForgetPasswordService {
+public class ForgetPasswordService implements ForgetPasswordServiceInterface {
 
     @Autowired
     private ContactUsService emailService;
@@ -21,6 +22,7 @@ public class ForgetPasswordService {
     private final Map<String, String> otpStorage = new ConcurrentHashMap<>();
     private final Map<String, LocalDateTime> otpExpiry = new ConcurrentHashMap<>();
 
+    @Override
     public ResponseMessageDTO sendOtp(String email) {
         String otp = String.format("%06d", random.nextInt(1000000));
         LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5);
@@ -33,11 +35,12 @@ public class ForgetPasswordService {
         return new ResponseMessageDTO("OTP sent successfully.");
     }
 
+    @Override
     public ResponseMessageDTO verifyOtp(String email, String otp) {
         if (!otpStorage.containsKey(email) || !otpStorage.get(email).equals(otp)) {
             return new ResponseMessageDTO("Invalid OTP.");
         }
-        
+
         if (otpExpiry.get(email).isBefore(LocalDateTime.now())) {
             otpStorage.remove(email);
             otpExpiry.remove(email);

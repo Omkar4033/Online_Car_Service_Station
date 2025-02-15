@@ -8,12 +8,14 @@ import com.wheely.dao.CategoryRepository;
 import com.wheely.dao.ServiceRepository;
 import com.wheely.dto.ServiceDTO;
 import com.wheely.pojos.Category;
+import com.wheely.pojos.Service;
+import com.wheely.service.interfaces.ServiceServiceInterface;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceService {
+public class ServiceService implements ServiceServiceInterface {
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -21,41 +23,41 @@ public class ServiceService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    //To  Get all categories
+    @Override
     @Transactional
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-    //To  Create a new service
-    public com.wheely.pojos.Service createService(com.wheely.pojos.Service service) {
+    @Override
+    public Service createService(Service service) {
         return serviceRepository.save(service);
     }
 
-    // To Get all active services
+    @Override
     @Transactional
-    public List<com.wheely.pojos.Service> getAllServices() {
-        return serviceRepository.findByIsActiveTrue(); 
+    public List<Service> getAllServices() {
+        return serviceRepository.findByIsActiveTrue();
     }
 
-    // To all active services by category
-    public List<com.wheely.pojos.Service> getServicesByCategory(Long categoryId) {
+    @Override
+    public List<Service> getServicesByCategory(Long categoryId) {
         return serviceRepository.findByCategory_CategoryIdAndIsActiveTrue(categoryId);
     }
 
-    // To Get a single active service by ID
-    public com.wheely.pojos.Service getServiceById(Long id) {
-        Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(id);
-        return optionalService.filter(com.wheely.pojos.Service::isActive).orElse(null);
+    @Override
+    public Service getServiceById(Long id) {
+        Optional<Service> optionalService = serviceRepository.findById(id);
+        return optionalService.filter(Service::isActive).orElse(null);
     }
 
-    // Update an existing service
-    public com.wheely.pojos.Service updateService(Long id, ServiceDTO serviceDto) {
-        Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(id);
+    @Override
+    public Service updateService(Long id, ServiceDTO serviceDto) {
+        Optional<Service> optionalService = serviceRepository.findById(id);
         if (optionalService.isPresent()) {
-            com.wheely.pojos.Service entity = optionalService.get();
+            Service entity = optionalService.get();
             if (!entity.isActive()) {
-                return null; 
+                return null;
             }
             entity.setName(serviceDto.getName());
             entity.setDescription(serviceDto.getDescription());
@@ -64,18 +66,17 @@ public class ServiceService {
             Optional<Category> category = categoryRepository.findById(serviceDto.getCategoryId());
             category.ifPresent(entity::setCategory);
 
-            serviceRepository.save(entity);
-            return entity;
+            return serviceRepository.save(entity);
         }
         return null;
     }
 
-    // Soft delete a service
+    @Override
     public boolean softDeleteService(Long serviceId) {
-        Optional<com.wheely.pojos.Service> optionalService = serviceRepository.findById(serviceId);
+        Optional<Service> optionalService = serviceRepository.findById(serviceId);
         if (optionalService.isPresent()) {
-            com.wheely.pojos.Service service = optionalService.get();
-            service.setActive(false); 
+            Service service = optionalService.get();
+            service.setActive(false);
             serviceRepository.save(service);
             return true;
         }

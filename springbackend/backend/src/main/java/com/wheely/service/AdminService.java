@@ -1,83 +1,82 @@
-package com.wheely.service;
+package com.wheely.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.wheely.dao.BookingRepository;
-import com.wheely.dao.CarRepository;
-import com.wheely.dao.CategoryRepository;
-import com.wheely.dao.ServiceRepository;
-import com.wheely.dao.UserRepository;
 import com.wheely.dto.ServiceDTO;
 import com.wheely.pojos.Booking;
 import com.wheely.pojos.Car;
 import com.wheely.pojos.Category;
 import com.wheely.pojos.User;
 import com.wheely.pojos.UserRole;
-import com.wheely.exception.GlobalException
+import com.wheely.pojos.Service;
+import com.wheely.dao.BookingRepository;
+import com.wheely.dao.CarRepository;
+import com.wheely.dao.CategoryRepository;
+import com.wheely.dao.ServiceRepository;
+import com.wheely.dao.UserRepository;
+import com.wheely.exception.GlobalException;
+import com.wheely.service.interfaces.AdminServiceInterface;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class AdminService {
+@Transactional
+public class AdminService implements AdminServiceInterface {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private BookingRepository bookingRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
-	@Autowired
-	private ServiceRepository serviceRepository;
+    @Autowired
+    private ServiceRepository serviceRepository;
 
-	@Autowired
-	private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-	@Autowired
-	private CarRepository carRepository;
+    @Autowired
+    private CarRepository carRepository;
 
-	// Getting  all users
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-	 // Getting all bookings
-	public List<Booking> getAllBookings() {
-		return bookingRepository.findAll();
-	}
+    @Override
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
 
-	// Getting all services
-	public List<com.wheely.pojos.Service> getAllServices() {
-		return serviceRepository.findAll();
-	}
+    @Override
+    public List<Service> getAllServices() {
+        return serviceRepository.findAll();
+    }
 
-	// Adding service
-	public com.wheely.pojos.Service addService(ServiceDTO serviceDto) {
-		Category category = categoryRepository.findById(serviceDto.getCategoryId())
-				.orElseThrow(() -> new GlobalException("Category not found"));
+    @Override
+    public Service addService(ServiceDTO serviceDto) {
+        Category category = categoryRepository.findById(serviceDto.getCategoryId())
+                .orElseThrow(() -> new GlobalException("Category not found"));
 
-		com.wheely.pojos.Service service = new com.wheely.pojos.Service(serviceDto.getName(), serviceDto.getDescription(),
-				serviceDto.getPrice(), category);
-		return serviceRepository.save(service);
-	}
+        Service service = new Service(
+                serviceDto.getName(),
+                serviceDto.getDescription(),
+                serviceDto.getPrice(),
+                category
+        );
+        return serviceRepository.save(service);
+    }
 
-	// Fetch all cars if the user is an admin
-	public List<Car> getAllCars(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    @Override
+    public List<Car> getAllCars(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-		if (user.getRole() == UserRole.ADMIN) {
-			return carRepository.findAll();
-
-		} else {
-			throw new RuntimeException("Unauthorized: Only admin can access cars");
-		}
-
-	}
-	
-	
-	
-	
+        if (user.getRole() == UserRole.ADMIN) {
+            return carRepository.findAll();
+        } else {
+            throw new RuntimeException("Unauthorized: Only admin can access cars");
+        }
+    }
 }

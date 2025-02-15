@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class AddressService {
+public class AddressService implements AddressServiceInterface {
 
     @Autowired
     private AddressRepository addressRepository;
@@ -25,23 +25,17 @@ public class AddressService {
     @Autowired
     private UserRepository userRepository;
 
-  
-
+    @Override
     public Address saveAddress(Long userId, Address address) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
 
         address.setUser(user);
-
-
         return addressRepository.save(address);
     }
 
-
-
- //  ToGet all addresses by user id 
+    @Override
     public List<Address> getAddressesByUserId(Long userId) {
         return addressRepository.findByUser_UserId(userId);
     }
-
 }
