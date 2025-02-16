@@ -18,6 +18,7 @@ public class ContactUsController {
     @Autowired
     private ContactUsService emailService;
 
+    // to send the message
     @PostMapping("/send")
     public ResponseEntity<String> sendMessage(@RequestBody ContactUsDTO request) {
         try {
@@ -26,7 +27,7 @@ public class ContactUsController {
                     + "Email: " + request.getEmail() + "\n"
                     + "Message: " + request.getMessage();
 
-            // Send an email to the admin
+            // send an email to the admin
             emailService.sendEmail("prajwalshinde1262@gmail.com", subject, messageBody);
 
             return ResponseEntity.ok("Message sent successfully");

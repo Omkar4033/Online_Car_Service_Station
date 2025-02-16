@@ -41,10 +41,10 @@ public class CarController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getCarsByUserId(@PathVariable Long userId) {
         try {
-            // Fetch all cars for the user
+   
             List<Car> cars = carService.getCarsByUserId(userId);
             
-            // Check if the user has cars
+           
             if (cars.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No cars found for this user.");
             }
@@ -55,7 +55,7 @@ public class CarController {
         }
     }
     
-    // Get car by id
+    //To  Get car by id
     @GetMapping("/{id}")
     public ResponseEntity<?> getCarById(@PathVariable Long id) {
         try {

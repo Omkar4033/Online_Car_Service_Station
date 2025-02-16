@@ -55,7 +55,7 @@ public class UserController {
 		System.out.println(authenticationToken.isAuthenticated());
 		Authentication authToken = 
 				authenticationManager.authenticate(authenticationToken);
-		//=> auth success
+	
 		System.out.println(authToken.isAuthenticated());
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new AuthResp("Successful Auth !",
@@ -72,27 +72,28 @@ public class UserController {
             newUser.setEmail(registrationDTO.getEmail());
             newUser.setPhoneNo(registrationDTO.getPhoneNo());
 
-            // Hash the password using BCrypt
+            // for becrypting
             String hashedPassword = passwordEncoder.encode(registrationDTO.getPassword());
             newUser.setPassword(hashedPassword);
 
-            // Handle role conversion
+            
             try {
                 newUser.setRole(UserRole.valueOf(registrationDTO.getRole().toUpperCase()));
             } catch (IllegalArgumentException e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 400 Bad Request if role is invalid
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
-            // Register user
+         
             User registeredUser = userService.registerUser(newUser);
 
-            // If registration is successful, return the User object with HTTP Status CREATED
+            
             return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Internal Server Error if an exception occurs
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
+    // to get user by id
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);  // Call the service method to get user by ID
@@ -105,7 +106,7 @@ public class UserController {
     }
 
 
-    // Update API - Update user details by ID
+    // to Update user details by ID
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateUser(@RequestBody UserUpdateDTO userUpdateDTO, @PathVariable Long id) {
         String result = userService.updateUserDetails(userUpdateDTO, id);

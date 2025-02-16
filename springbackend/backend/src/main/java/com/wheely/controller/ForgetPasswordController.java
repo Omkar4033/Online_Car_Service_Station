@@ -18,11 +18,13 @@ public class ForgetPasswordController {
     @Autowired
     private ForgetPasswordService forgotPasswordService;
 
+    // to send the otp
     @PostMapping("/forgot-password")
     public ResponseEntity<ResponseMessageDTO> sendOtp(@RequestBody ForgetPasswordDTO request) {
         return ResponseEntity.ok(forgotPasswordService.sendOtp(request.getEmail()));
     }
 
+    //to verify the otp
     @PostMapping("/verify-otp")
     public ResponseEntity<ResponseMessageDTO> verifyOtp(@RequestBody OtpVerificationDTO request) {
         return ResponseEntity.ok(forgotPasswordService.verifyOtp(request.getEmail(), request.getOtp()));

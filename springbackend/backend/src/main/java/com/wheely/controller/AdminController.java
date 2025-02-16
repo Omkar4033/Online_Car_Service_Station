@@ -32,9 +32,9 @@ public class AdminController {
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User> users = adminService.getAllUsers();
 		if (users != null && !users.isEmpty()) {
-			return new ResponseEntity<>(users, HttpStatus.OK); // 200 OK
+			return new ResponseEntity<>(users, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content if no users found
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
 		}
 	}
 
@@ -43,9 +43,9 @@ public class AdminController {
 	public ResponseEntity<List<Booking>> getAllBookings() {
 		List<Booking> bookings = adminService.getAllBookings();
 		if (bookings != null && !bookings.isEmpty()) {
-			return new ResponseEntity<>(bookings, HttpStatus.OK); // 200 OK
+			return new ResponseEntity<>(bookings, HttpStatus.OK); 
 		} else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content if no bookings found
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
 		}
 	}
 
@@ -54,9 +54,9 @@ public class AdminController {
 	public ResponseEntity<List<Service>> getAllServices() {
 		List<Service> services = adminService.getAllServices();
 		if (services != null && !services.isEmpty()) {
-			return new ResponseEntity<>(services, HttpStatus.OK); // 200 OK
+			return new ResponseEntity<>(services, HttpStatus.OK); 
 		} else {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content if no services found
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
 		}
 	}
 
@@ -89,11 +89,11 @@ public class AdminController {
 	        Service updatedService = serviceService.updateService(serviceId, serviceDto);
 	        return ResponseEntity.ok(updatedService);
 	    } else {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 if service not found
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
 	    }
 	}
 
-	// Soft delete a service (mark it as  inactive)
+	// Soft delete a service (mark it to inactive)
 	@DeleteMapping("/services/delete/{serviceId}")
 	public ResponseEntity<String> softDeleteService(@PathVariable Long serviceId) {
 	    boolean isDeleted = serviceService.softDeleteService(serviceId);

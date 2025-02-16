@@ -23,17 +23,13 @@ public class PaymentController {
     @PostMapping("/create-payment-intent")
     public ResponseEntity<?> createPaymentIntent(@RequestBody PaymentRequestDTO paymentRequest) {
         try {
-            // Initialize Stripe API key
             Stripe.apiKey = stripeSecretKey;
-
-            // Create PaymentIntent parameters
             PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                     .setAmount((long) paymentRequest.getAmount() * 100) // Convert to cents
                     .setCurrency("inr")
                     .addPaymentMethodType("card")
                     .build();
 
-            // Create PaymentIntent
             PaymentIntent intent = PaymentIntent.create(params);
 
             // Send clientSecret to frontend

@@ -39,7 +39,7 @@ public class ServiceController {
         }
     }
 
-    // Get a single service by ID
+    // Get a single service by given ID
     @GetMapping("/{id}")
     public ResponseEntity<Service> getServiceById(@PathVariable Long id) {
         try {
