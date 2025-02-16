@@ -14,27 +14,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration //equivalent to bean config xml
-@EnableWebSecurity //to enable annotation support for spring sec
+@Configuration
+@EnableWebSecurity 
 public class SecurityConfiguration {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private CustomJWTAuthenticationFilter customJWTAuthenticationFilter;
 	
-	// Configure the bean to customize spring security filter chain
+	
 		@Bean
 		public SecurityFilterChain authorizeRequests(HttpSecurity http) throws Exception
 		{
-			//1. Disable CSRF filter
+			
 			http.csrf(customizer -> customizer.disable())
-			//2. configure URL based access
+			
 	        .authorizeHttpRequests
 	        (request -> 
 	        request.requestMatchers("/products/view",
 	        		"/users/register","/users/login",
 					"/v*/api-doc*/**","/swagger-ui/**").permitAll() 
-	        //required explicitly for JS clients (eg React app - to permit pre flight requests)
+	    
 	        .requestMatchers(HttpMethod.OPTIONS).permitAll()
 	        	
 	       .requestMatchers("/users/**")
