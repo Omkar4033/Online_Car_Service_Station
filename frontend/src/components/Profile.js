@@ -5,64 +5,46 @@ import { useSelector } from "react-redux";
 
 const Profile = ({ isLoggedIn, darkMode, handleLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const user = useSelector((state) => state.userData?.user); // Get user data from the Redux store
+  const user = useSelector((state) => state.userData?.user);
   const navigate = useNavigate();
 
-  // Toggle the dropdown menu
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  // Close the dropdown after 5 seconds if it was opened
   useEffect(() => {
     if (isDropdownOpen) {
       const timer = setTimeout(() => {
-        setIsDropdownOpen(false); // Close the dropdown after 5 seconds
+        setIsDropdownOpen(false);
       }, 5000);
-
-      return () => clearTimeout(timer); // Clear timeout if the dropdown is closed before 5 seconds
+      return () => clearTimeout(timer);
     }
   }, [isDropdownOpen]);
 
-  // Handle logout
   const logout = () => {
-    handleLogout(); // Call the passed handleLogout function (e.g., Redux action or state update)
-    setIsDropdownOpen(false); // Close dropdown
-    navigate("/"); // Redirect to the homepage or login page after logout
+    handleLogout();
+    setIsDropdownOpen(false);
+    navigate("/");
   };
 
-  // Get the first letter of the user's name
-  const getInitials = (name) => {
-    if (name) {
-      const nameParts = name.split(" "); // Split the name to handle first and last names
-      return nameParts.map(part => part.charAt(0).toUpperCase()).join(""); // Combine first letters of first and last name
-    }
-    return ""; // Return empty string if no name
-  };
 
   return (
-    <div className="relative  ">
+    <div className="relative">
       <button
-        className="bg-gray-300 dark:bg-gray-600  text-yellow-600 px-3 py-1 rounded-3xl hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200 ease-in-out"
+        className="bg-gray-300 dark:bg-gray-600 text-yellow-600 px-3 py-1 rounded-3xl hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200 ease-in-out"
         onClick={toggleDropdown}
       >
         {isLoggedIn ? (
           user?.name ? (
-            // Display the user's first initials if name is available
-            <div className="text-3xl  font-bold">{user.name.toUpperCase().charAt(0)}</div>
+            <div className="text-3xl font-bold">{user.name.toUpperCase().charAt(0)}</div>
           ) : (
-            darkMode ? (
-              <FaUserTie className="text-2xl" /> // User icon for dark mode
-            ) : (
-              <FaUserAlt className="text-2xl" /> // User icon for light mode
-            )
+            darkMode ? <FaUserTie className="text-2xl" /> : <FaUserAlt className="text-2xl" />
           )
         ) : (
           <span>Login / Register</span>
         )}
       </button>
 
-      {/* Dropdown menu */}
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-50">
           <ul className="text-gray-800 dark:text-gray-100">
@@ -83,26 +65,18 @@ const Profile = ({ isLoggedIn, darkMode, handleLogout }) => {
                     <FaRegBookmark className="mr-2" /> Bookings
                   </Link>
                 </li>
-
-                {/* New "My Cars" Dropdown Item */}
                 <li className="hover:bg-gray-200 dark:hover:bg-gray-600">
                   <Link to="/user/my-cars" className="flex items-center px-4 py-2">
                     <FaCar className="mr-2" /> My Cars
                   </Link>
                 </li>
-                
                 <li className="hover:bg-gray-200 dark:hover:bg-gray-600">
                   <Link to="/user/settings" className="flex items-center px-4 py-2">
                     <FaCog className="mr-2" /> Settings
                   </Link>
                 </li>
-
-                {/* Logout option with FaSignOutAlt icon */}
                 <li className="hover:bg-gray-200 dark:hover:bg-gray-600">
-                  <button
-                    onClick={logout} // Call the logout function
-                    className="flex items-center px-4 py-2 text-red-500"
-                  >
+                  <button onClick={logout} className="flex items-center px-4 py-2 text-red-500">
                     <FaSignOutAlt className="mr-2" /> Logout
                   </button>
                 </li>
