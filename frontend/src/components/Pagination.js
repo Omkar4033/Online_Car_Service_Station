@@ -4,16 +4,16 @@ const Pagination = ({
   currentPage,
   totalPages,
   onPageChange,
-  siblingCount = 1, // Number of pages to show before and after the current page
-  pageRangeDisplayed = 5, // Total number of page buttons to display
+  siblingCount = 1, 
+  pageRangeDisplayed = 5, 
 }) => {
-  // Helper function to generate an array of page numbers
+ 
   const getPageNumbers = () => {
     const pageNumbers = [];
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
     const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
 
-    // Adding the first page and currentPage with gap when needed
+    
     if (leftSiblingIndex > 1) pageNumbers.push(1);
     if (leftSiblingIndex > 2) pageNumbers.push("...");
 

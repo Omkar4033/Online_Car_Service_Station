@@ -31,7 +31,7 @@ const AdminAllBooking = () => {
         date: new Date(booking.bookingDate).toLocaleDateString(),
         status: booking.bookingStatus,
         price: `$${booking.totalAmount.toFixed(2)}`,
-        services: booking.services.map(service => service.name).join(", ") // Extract service names
+        services: booking.services.map((service) => service.name).join(", "), 
       }));
 
       setBookings(formattedBookings);
@@ -56,12 +56,19 @@ const AdminAllBooking = () => {
 
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
-  const currentBookings = filteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
+  const currentBookings = filteredBookings.slice(
+    indexOfFirstBooking,
+    indexOfLastBooking
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className={`min-h-screen flex ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"}`}>
+    <div
+      className={`min-h-screen flex ${
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
+      }`}
+    >
       <Sidebar />
 
       <main className="flex-1 p-6 space-y-8">
@@ -73,7 +80,11 @@ const AdminAllBooking = () => {
               <button
                 key={status}
                 onClick={() => handleStatusChange(status)}
-                className={`px-4 py-2 rounded-xl rounded ${selectedStatus === status ? "bg-blue-600 text-white" : "bg-gray-300 text-black"}`}
+                className={`px-4 py-2 rounded-xl rounded ${
+                  selectedStatus === status
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-300 text-black"
+                }`}
               >
                 {status}
               </button>
@@ -85,9 +96,17 @@ const AdminAllBooking = () => {
           ) : (
             <>
               {filteredBookings.length > 0 ? (
-                <table className={`w-full text-left border-collapse ${darkMode ? "text-gray-300" : "text-gray-800"}`}>
+                <table
+                  className={`w-full text-left border-collapse ${
+                    darkMode ? "text-gray-300" : "text-gray-800"
+                  }`}
+                >
                   <thead>
-                    <tr className={`${darkMode ? "bg-gray-700" : "bg-gray-200"} text-sm font-semibold`}>
+                    <tr
+                      className={`${
+                        darkMode ? "bg-gray-700" : "bg-gray-200"
+                      } text-sm font-semibold`}
+                    >
                       <th className="p-3">Car Name</th>
                       <th className="p-3">Customer Name</th>
                       <th className="p-3">Date</th>
@@ -100,7 +119,15 @@ const AdminAllBooking = () => {
                     {currentBookings.map((booking, index) => (
                       <tr
                         key={booking.id}
-                        className={`${darkMode ? (index % 2 === 0 ? "bg-gray-800" : "bg-gray-700") : (index % 2 === 0 ? "bg-white" : "bg-gray-100")}`}
+                        className={`${
+                          darkMode
+                            ? index % 2 === 0
+                              ? "bg-gray-800"
+                              : "bg-gray-700"
+                            : index % 2 === 0
+                            ? "bg-white"
+                            : "bg-gray-100"
+                        }`}
                       >
                         <td className="p-3">{booking.serviceName}</td>
                         <td className="p-3">{booking.customerName}</td>
@@ -113,10 +140,18 @@ const AdminAllBooking = () => {
                   </tbody>
                 </table>
               ) : (
-                <p className="text-center text-gray-500">No bookings found for this status.</p>
+                <p className="text-center text-gray-500">
+                  No bookings found for this status.
+                </p>
               )}
 
-              <Pagination currentPage={currentPage} totalPages={Math.ceil(filteredBookings.length / bookingsPerPage)} onPageChange={paginate} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(
+                  filteredBookings.length / bookingsPerPage
+                )}
+                onPageChange={paginate}
+              />
             </>
           )}
         </section>
