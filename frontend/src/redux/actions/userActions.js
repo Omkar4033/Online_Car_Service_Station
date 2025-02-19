@@ -2,7 +2,7 @@ import axios from "axios";
 
 const url = "http://localhost:8080/api/users";
 
-// Action Creators
+
 export const registerUser = (userData) => async (dispatch) => {
   dispatch({ type: "USER_REGISTER_REQUEST" });
 

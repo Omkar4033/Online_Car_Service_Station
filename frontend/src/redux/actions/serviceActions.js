@@ -37,7 +37,7 @@ export const addToCart = (service) => {
   };
 };
 
-// Async Action to Fetch Services
+
 export const fetchServices = () => {
   return async (dispatch) => {
     try {
@@ -49,7 +49,7 @@ export const fetchServices = () => {
       const categoriesArray = Object.keys(categorizedServices);
       const defaultCategory = categoriesArray.length ? categoriesArray[0] : "Uncategorized";
 
-      // Dispatch actions to update the store
+   
       dispatch(setCategories(categoriesArray));
       dispatch(setSelectedCategory(defaultCategory));
       dispatch(setCategorizedServices(categorizedServices));
@@ -59,7 +59,6 @@ export const fetchServices = () => {
   };
 };
 
-// Helper function to categorize services
 const categorizeServices = (services) => {
   const categorizedServices = {};
   services.forEach((service) => {
